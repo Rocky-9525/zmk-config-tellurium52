@@ -3,3 +3,4 @@ include:
     shield: tellurium52_L
   - board: seeed_xiao_ble
     shield: tellurium52_R
+    
