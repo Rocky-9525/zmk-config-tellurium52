@@ -1,5 +1,52 @@
 name: Build
+
 on: [push, pull_request, workflow_dispatch]
+
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    runs-on: ubuntu-latest
+    container:
+      image: zmkfirmware/zmk-build-arm:stable
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - board: seeeduino_xiao_ble
+            shield: tellurium52_L
+          - board: seeeduino_xiao_ble
+            shield: tellurium52_R
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cache west modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            modules
+            zephyr
+            bootloader
+            zmk
+          key: ${{ runner.os }}-west-${{ hashFiles('**/west.yml', '**/build.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-west-
+      - name: Initialize west workspace
+        run: west init -l config
+      - name: Update modules
+        run: west update
+      - name: Export Zephyr CMake package
+        run: west export
+      - name: Prepare variables
+        shell: bash
+        run: |
+          echo "zephyr_version=${$(west list -f '${version}' zephyr)}" >> $GITHUB_ENV
+          echo "shield=${{ matrix.shield }}" >> $GITHUB_ENV
+          echo "board=${{ matrix.board }}" >> $GITHUB_ENV
+      - name: Build ZMK
+        run: west build -s zmk/app -b ${{ matrix.board }} -- -DSHIELD=${{ matrix.shield }}
+      - name: Rename zmk.uf2
+        run: cp build/zephyr/zmk.uf2 ${{ matrix.shield }}-${{ matrix.board }}-zmk.uf2
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: "*.uf2"
