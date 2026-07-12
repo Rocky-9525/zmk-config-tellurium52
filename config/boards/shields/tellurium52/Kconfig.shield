@@ -1,0 +1,5 @@
+config SHIELD_TELLURIUM52_L
+    def_bool $(shields_list_contains,tellurium52_L)
+
+config SHIELD_TELLURIUM52_R
+    def_bool $(shields_list_contains,tellurium52_R)
