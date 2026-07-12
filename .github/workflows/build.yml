@@ -11,9 +11,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - board: seeeduino_xiao_ble
+          - board: seeed_xiao_ble
             shield: tellurium52_L
-          - board: seeeduino_xiao_ble
+          - board: seeed_xiao_ble
             shield: tellurium52_R
     steps:
       - name: Checkout
