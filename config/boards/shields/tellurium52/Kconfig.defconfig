@@ -1,0 +1,9 @@
+if SHIELD_TELLURIUM52_L || SHIELD_TELLURIUM52_R
+
+config ZMK_KEYBOARD_NAME
+    default "tellurium52"
+
+config ZMK_SPLIT
+    default y
+
+endif
