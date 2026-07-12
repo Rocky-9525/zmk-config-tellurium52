@@ -1,0 +1,5 @@
+#include "tellurium52_L.overlay"
+
+&default_transform {
+    col-offset = <4>;
+};
