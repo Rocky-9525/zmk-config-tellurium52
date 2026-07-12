@@ -8,32 +8,57 @@
 
     default_transform: matrix_transform {
         compatible = "zmk,matrix-transform";
-        columns = <8>;
-        rows = <5>;
-        // デュプレックス配線に合わせたキーの並び替え
+        columns = <5>;
+        rows = <9>;
+        // 9行5列の仮想マトリックスにキーを割り当てます
         map = <
-            RC(0,0) RC(1,0) RC(2,0) RC(3,0) RC(4,0) RC(0,4) RC(1,4) RC(2,4) RC(3,4) RC(4,4)
-            RC(0,1) RC(1,1) RC(2,1) RC(3,1) RC(4,1) RC(0,5) RC(1,5) RC(2,5) RC(3,5) RC(4,5)
-            RC(0,2) RC(1,2) RC(2,2) RC(3,2) RC(4,2) RC(0,6) RC(1,6) RC(2,6) RC(3,6) RC(4,6)
-            RC(0,3) RC(1,3) RC(2,3) RC(3,3) RC(4,3) RC(0,7) RC(1,7) RC(2,7) RC(3,7) RC(4,7)
+            RC(0,0) RC(0,1) RC(0,2) RC(0,3) RC(1,0) RC(1,1) RC(1,2) RC(1,3) RC(2,0) RC(2,1) RC(2,2) RC(2,3) RC(3,0)
+            RC(5,0) RC(5,1) RC(5,2) RC(5,3) RC(5,4) RC(6,0) RC(6,1) RC(6,2) RC(6,3) RC(6,4) RC(7,0) RC(7,1) RC(7,2)
         >;
     };
 
-    kscan0: kscan {
+    kscan0: kscan_composite {
+        compatible = "zmk,kscan-composite";
+        rows = <9>;
+        columns = <5>;
+
+        // グループA (SW1-13): Row D0-D4 -> Col D5-D8
+        matrix1 {
+            kscan = <&kscan_a>;
+        };
+
+        // グループB (SW14-26): Col D5-D8 -> Row D0-D4 (役割を入れ替え)
+        matrix2 {
+            kscan = <&kscan_b>;
+            row-offset = <5>;
+        };
+    };
+
+    kscan_a: kscan_a {
         compatible = "zmk,kscan-gpio-matrix";
-        diode-direction = "both"; // デュプレックス配線の肝
-        row-gpios
-            = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            ;
-        col-gpios
-            = <&xiao_d 5 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 6 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 7 GPIO_ACTIVE_HIGH>
-            , <&xiao_d 8 GPIO_ACTIVE_HIGH>
-            ;
+        diode-direction = "row2col";
+        row-gpios = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+        col-gpios = <&xiao_d 5 GPIO_ACTIVE_HIGH>,
+                    <&xiao_d 6 GPIO_ACTIVE_HIGH>,
+                    <&xiao_d 7 GPIO_ACTIVE_HIGH>,
+                    <&xiao_d 8 GPIO_ACTIVE_HIGH>;
+    };
+
+    kscan_b: kscan_b {
+        compatible = "zmk,kscan-gpio-matrix";
+        diode-direction = "row2col";
+        row-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                    <&xiao_d 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+        col-gpios = <&xiao_d 0 GPIO_ACTIVE_HIGH>,
+                    <&xiao_d 1 GPIO_ACTIVE_HIGH>,
+                    <&xiao_d 2 GPIO_ACTIVE_HIGH>,
+                    <&xiao_d 3 GPIO_ACTIVE_HIGH>,
+                    <&xiao_d 4 GPIO_ACTIVE_HIGH>;
     };
 };
