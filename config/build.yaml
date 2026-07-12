@@ -3,3 +3,5 @@ include:
     shield: tellurium52_L
   - board: seeed_xiao_ble
     shield: tellurium52_R
+    # 右手を親機にするための魔法の言葉
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=y
