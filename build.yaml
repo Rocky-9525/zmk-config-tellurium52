@@ -1,5 +1,5 @@
 include:
-  - board: seeed_xiao_nrf52840
+  - board: xiao_ble
     shield: tellurium52_L
-  - board: seeed_xiao_nrf52840
+  - board: xiao_ble
     shield: tellurium52_R
