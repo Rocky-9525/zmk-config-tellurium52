@@ -3,3 +3,6 @@ include:
     shield: tellurium52_L
   - board: xiao_ble//zmk
     shield: tellurium52_R
+  - board: settings_reset
+  - board: xiao_ble//zmk
+    shield: tellurium52
