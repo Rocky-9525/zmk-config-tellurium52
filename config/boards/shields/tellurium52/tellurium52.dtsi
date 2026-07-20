@@ -1,15 +1,14 @@
 #include <dt-bindings/zmk/matrix_transform.h>
-#include <physical_layouts.dtsi> /* 【最重要】ZMK公式のレイアウトライブラリ */
+#include <physical_layouts.dtsi>
 
 / {
-    /* 【最重要】chosenの中に zmk,kscan と zmk,matrix-transform を追加。これでキー入力がPCへ届きます */
+    /* 【超重要】zmk,matrix-transform を削除しました。これで static assertion エラーが消えます */
     chosen {
         zmk,kscan = &kscan0;
-        zmk,matrix-transform = &default_transform;
         zmk,physical-layout = &layout_main;
     };
 
-    /* 双方向総当たりスキャン（9ピン×18列）用のマトリクス変換マップ */
+    /* マトリックス変換マップ（ZMK Studioがここを動的に参照します） */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <18>;
@@ -35,7 +34,6 @@
         transform = <&default_transform>;
         kscan = <&kscan0>;
         keys
-            /* 左右52個、すべてのキーを公式の 7パラメータ `&key_physical_attrs` に統一 */
             /* 左手 26個 */
             = <&key_physical_attrs 100 100   0   0 0 0 0> , <&key_physical_attrs 100 100 100   0 0 0 0> , <&key_physical_attrs 100 100 200   0 0 0 0> , <&key_physical_attrs 100 100 300   0 0 0 0> , <&key_physical_attrs 100 100 400  50 0 0 0> , <&key_physical_attrs 100 100 500  50 0 0 0>
             , <&key_physical_attrs 100 100   0 100 0 0 0> , <&key_physical_attrs 100 100 100 100 0 0 0> , <&key_physical_attrs 100 100 200 100 0 0 0> , <&key_physical_attrs 100 100 300 100 0 0 0> , <&key_physical_attrs 100 100 400 150 0 0 0> , <&key_physical_attrs 100 100 500 150 0 0 0>
