@@ -6,4 +6,9 @@ config ZMK_KEYBOARD_NAME
 config ZMK_SPLIT
     default y
 
+# 右手を親機にするためのスイッチ
+config ZMK_SPLIT_ROLE_CENTRAL
+    default y if SHIELD_TELLURIUM52_R
+    default n if SHIELD_TELLURIUM52_L
+
 endif
