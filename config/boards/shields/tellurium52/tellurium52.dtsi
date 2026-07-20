@@ -1,12 +1,17 @@
 #include <dt-bindings/zmk/matrix_transform.h>
-#include <physical_layouts.dtsi>
 
 / {
+    /* --- エラー回避用の強制ラベル定義 --- */
+    physical_attrs: physical_attrs {
+        compatible = "zmk,physical-layout-key";
+        #binding-cells = <5>;
+    };
+
     chosen {
         zmk,physical-layout = &layout_main;
     };
 
-    /* デュプレックス・マトリックスの論理変換（5行×16列想定） */
+    /* デュプレックス・マトリックス変換（5行 × 16列） */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <16>;
@@ -27,16 +32,15 @@
         >;
     };
 
-    /* ZMK Studio 用の物理座標定義 */
+    /* 物理レイアウト設定 */
     layout_main: layout_main {
         compatible = "zmk,physical-layout";
         display-name = "Default Layout";
         transform = <&default_transform>;
         kscan = <&kscan0>;
 
-        /* 100 = 1Uサイズ。&physical_attrs に修正 */
         keys
-            /* 左手側 */
+            /* 左手側 (26個) */
             = <&physical_attrs 100 100   0   0 0> // ESC
             , <&physical_attrs 100 100 100   0 0> // Q
             , <&physical_attrs 100 100 200   0 0> // W
@@ -64,7 +68,7 @@
             , <&physical_attrs 100 100 500 350 0> // L-In2
             , <&physical_attrs 100 100 600 350 0> // L-In3
 
-            /* 右手側 */
+            /* 右手側 (26個) */
             , <&physical_attrs 100 100 1100   0 0> // I
             , <&physical_attrs 100 100 1200   0 0> // O
             , <&physical_attrs 100 100 1300   0 0> // P
