@@ -1,0 +1,24 @@
+/ {
+    chosen {
+        zmk,physical-layout = &layout_main;
+    };
+
+    default_transform: keymap_transform_0 {
+        compatible = "zmk,matrix-transform";
+        columns = <8>;
+        rows = <7>;
+        // ここに以前定義した map = <...> の内容をそのまま入れてください
+        // (左右52キー分の定義)
+    };
+
+    layout_main: layout_main {
+        compatible = "zmk,physical-layout";
+        display-name = "Default Layout";
+        transform = <&default_transform>;
+        kscan = <&kscan0>;
+        keys
+            = <&direct_physical_attrs 100 100 0 0 0>
+            // ... (ここに前回の回答の keys 52個を貼り付け)
+            ;
+    };
+};
