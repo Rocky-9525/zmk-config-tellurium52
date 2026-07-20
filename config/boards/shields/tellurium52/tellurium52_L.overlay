@@ -1,7 +1,15 @@
 #include "tellurium52.dtsi"
 
 &kscan0 {
-    row-gpios = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>, <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>, <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>, <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>, <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
-    col-gpios = <&xiao_d 5 GPIO_ACTIVE_HIGH>, <&xiao_d 6 GPIO_ACTIVE_HIGH>, <&xiao_d 7 GPIO_ACTIVE_HIGH>, <&xiao_d 8 GPIO_ACTIVE_HIGH>, <&xiao_d 5 GPIO_ACTIVE_HIGH>, <&xiao_d 6 GPIO_ACTIVE_HIGH>, <&xiao_d 7 GPIO_ACTIVE_HIGH>, <&xiao_d 8 GPIO_ACTIVE_HIGH>;
+    gpios
+        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // index 0: Row0 (D0)
+        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // index 1: Row1 (D1)
+        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // index 2: Row2 (D2)
+        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // index 3: Row3 (D3)
+        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // index 4: Row4 (D4)
+        , <&xiao_d 5 GPIO_ACTIVE_HIGH> // index 5: Col0 (D5)
+        , <&xiao_d 6 GPIO_ACTIVE_HIGH> // index 6: Col1 (D6)
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // index 7: Col2 (D7)
+        , <&xiao_d 8 GPIO_ACTIVE_HIGH> // index 8: Col3 (D8)
+        ;
 };
-&xiao_serial { status = "disabled"; }; /* D9/D10ピンのUART競合を無効化 */
