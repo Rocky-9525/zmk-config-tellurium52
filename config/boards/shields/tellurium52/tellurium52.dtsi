@@ -1,17 +1,17 @@
 #include <dt-bindings/zmk/matrix_transform.h>
 
 / {
-    /* 独自ラベルを定義してシステムの古いラベルを無視させる */
+    /* 最新の物理レイアウト用カスタムノード定義 */
     my_key: my_key {
         compatible = "zmk,physical-layout-key";
-        #binding-cells = <5>;
+        #key-cells = <5>; // ここを #key-cells に修正しました。これがエラーの直接の原因です！
     };
 
     chosen {
         zmk,physical-layout = &layout_main;
     };
 
-    /* デュプレックス・マトリックス変換 (5行 × 16列) */
+    /* 日本式デュプレックス・マトリックス変換 (5行 × 16列) */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <16>;
