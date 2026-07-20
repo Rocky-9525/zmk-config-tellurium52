@@ -1,28 +1,28 @@
 #include <dt-bindings/zmk/matrix_transform.h>
 
 / {
-    /* 最新の物理レイアウト用カスタムノード定義 */
-    my_key: my_key {
+    /* これが最新のZMK Studio（Zephyr 4.1）で必須の定義です */
+    physical_attrs: physical_attrs {
         compatible = "zmk,physical-layout-key";
-        #key-cells = <5>; // ここを #key-cells に修正しました。これがエラーの直接の原因です！
+        #key-cells = <5>; 
     };
 
     chosen {
         zmk,physical-layout = &layout_main;
     };
 
-    /* 日本式デュプレックス・マトリックス変換 (5行 × 16列) */
+    /* 日本式デュプレックス：5行 × 16列（左右8列ずつ） */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <16>;
         rows = <5>;
         map = <
-            /* 左手側 (26個) */
+            /* 左手 26キー */
             RC(0,0) RC(0,1) RC(0,2) RC(0,3)                 RC(0,4) RC(0,5)
             RC(1,0) RC(1,1) RC(1,2) RC(1,3)                 RC(1,4) RC(1,5)
             RC(2,0) RC(2,1) RC(2,2) RC(2,3)                 RC(2,4) RC(2,5) RC(2,6)
             RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5) RC(3,6)
-            /* 右手側 (26個) */
+            /* 右手 26キー */
             RC(0,10) RC(0,11) RC(0,12) RC(0,13)             RC(0,8) RC(0,9)
             RC(1,10) RC(1,11) RC(1,12) RC(1,13)             RC(1,8) RC(1,9)
             RC(2,10) RC(2,11) RC(2,12) RC(2,13)             RC(2,8) RC(2,9) RC(2,7)
@@ -37,15 +37,15 @@
         kscan = <&kscan0>;
         keys
             /* 左手 26個 */
-            = <&my_key 100 100 0 0 0> , <&my_key 100 100 100 0 0> , <&my_key 100 100 200 0 0> , <&my_key 100 100 300 0 0> , <&my_key 100 100 400 50 0> , <&my_key 100 100 500 50 0>
-            , <&my_key 100 100 0 100 0> , <&my_key 100 100 100 100 0> , <&my_key 100 100 200 100 0> , <&my_key 100 100 300 100 0> , <&my_key 100 100 400 150 0> , <&my_key 100 100 500 150 0>
-            , <&my_key 100 100 0 200 0> , <&my_key 100 100 100 200 0> , <&my_key 100 100 200 200 0> , <&my_key 100 100 300 200 0> , <&my_key 100 100 400 250 0> , <&my_key 100 100 500 250 0> , <&my_key 100 100 600 250 0>
-            , <&my_key 100 100 0 300 0> , <&my_key 100 100 100 300 0> , <&my_key 100 100 200 300 0> , <&my_key 100 100 300 300 0> , <&my_key 100 100 400 350 0> , <&my_key 100 100 500 350 0> , <&my_key 100 100 600 350 0>
+            = <&physical_attrs 100 100 0 0 0> , <&physical_attrs 100 100 100 0 0> , <&physical_attrs 100 100 200 0 0> , <&physical_attrs 100 100 300 0 0> , <&physical_attrs 100 100 400 50 0> , <&physical_attrs 100 100 500 50 0>
+            , <&physical_attrs 100 100 0 100 0> , <&physical_attrs 100 100 100 100 0> , <&physical_attrs 100 100 200 100 0> , <&physical_attrs 100 100 300 100 0> , <&physical_attrs 100 100 400 150 0> , <&physical_attrs 100 100 500 150 0>
+            , <&physical_attrs 100 100 0 200 0> , <&physical_attrs 100 100 100 200 0> , <&physical_attrs 100 100 200 200 0> , <&physical_attrs 100 100 300 200 0> , <&physical_attrs 100 100 400 250 0> , <&physical_attrs 100 100 500 250 0> , <&physical_attrs 100 100 600 250 0>
+            , <&physical_attrs 100 100 0 300 0> , <&physical_attrs 100 100 100 300 0> , <&physical_attrs 100 100 200 300 0> , <&physical_attrs 100 100 300 300 0> , <&physical_attrs 100 100 400 350 0> , <&physical_attrs 100 100 500 350 0> , <&physical_attrs 100 100 600 350 0>
             /* 右手 26個 */
-            , <&my_key 100 100 1100 0 0> , <&my_key 100 100 1200 0 0> , <&my_key 100 100 1300 0 0> , <&my_key 100 100 1400 0 0> , <&my_key 100 100 900 50 0> , <&my_key 100 100 1000 50 0>
-            , <&my_key 100 100 1100 100 0> , <&my_key 100 100 1200 100 0> , <&my_key 100 100 1300 100 0> , <&my_key 100 100 1400 100 0> , <&my_key 100 100 900 150 0> , <&my_key 100 100 1000 150 0>
-            , <&my_key 100 100 1100 200 0> , <&my_key 100 100 1200 200 0> , <&my_key 100 100 1300 200 0> , <&my_key 100 100 1400 200 0> , <&my_key 100 100 800 250 0> , <&my_key 100 100 900 250 0> , <&my_key 100 100 1000 250 0>
-            , <&my_key 100 100 1100 300 0> , <&my_key 100 100 1200 300 0> , <&my_key 100 100 1300 300 0> , <&my_key 100 100 1400 300 0> , <&my_key 100 100 800 350 0> , <&my_key 100 100 900 350 0> , <&my_key 100 100 1000 350 0>
+            , <&physical_attrs 100 100 1100 0 0> , <&physical_attrs 100 100 1200 0 0> , <&physical_attrs 100 100 1300 0 0> , <&physical_attrs 100 100 1400 0 0> , <&physical_attrs 100 100 900 50 0> , <&physical_attrs 100 100 1000 50 0>
+            , <&physical_attrs 100 100 1100 100 0> , <&physical_attrs 100 100 1200 100 0> , <&physical_attrs 100 100 1300 100 0> , <&physical_attrs 100 100 1400 100 0> , <&physical_attrs 100 100 900 150 0> , <&physical_attrs 100 100 1000 150 0>
+            , <&physical_attrs 100 100 1100 200 0> , <&physical_attrs 100 100 1200 200 0> , <&physical_attrs 100 100 1300 200 0> , <&physical_attrs 100 100 1400 200 0> , <&physical_attrs 100 100 800 250 0> , <&physical_attrs 100 100 900 250 0> , <&physical_attrs 100 100 1000 250 0>
+            , <&physical_attrs 100 100 1100 300 0> , <&physical_attrs 100 100 1200 300 0> , <&physical_attrs 100 100 1300 300 0> , <&physical_attrs 100 100 1400 300 0> , <&physical_attrs 100 100 800 350 0> , <&physical_attrs 100 100 900 350 0> , <&physical_attrs 100 100 1000 350 0>
             ;
     };
 
