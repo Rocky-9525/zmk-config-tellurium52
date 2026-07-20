@@ -30,7 +30,7 @@
     /* 双方向総当たりスキャンドライバ（Charlieplex） */
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-charlieplex";
-        wakeup-source;
+        /* wakeup-source; を完全に削除しました */
     };
 };
 
