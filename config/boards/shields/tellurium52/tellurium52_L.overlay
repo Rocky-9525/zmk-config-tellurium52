@@ -1,4 +1,8 @@
-#include <dt-bindings/zmk/matrix_transform.h>
+#include "tellurium52.dtsi"
+
+&kscan0 {
+    // 既存のピン設定（col-gpios, row-gpios）
+};
 
 / {
     chosen {
