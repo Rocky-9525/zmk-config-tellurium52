@@ -5,3 +5,4 @@ include:
     shield: tellurium52_L
   - board: xiao_ble//zmk
     shield: tellurium52_R
+    snippet: studio-rpc-usb-uart  # ← この行をここに追加します
