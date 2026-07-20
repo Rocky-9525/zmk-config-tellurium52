@@ -1,19 +1,19 @@
 #include "tellurium52.dtsi"
 
 &default_transform {
-    col-offset = <9>; /* 左手が9本（0〜8）のピンインデックスを使用するため、右手は9番から開始 */
+    col-offset = <9>;
 };
 
 &kscan0 {
     gpios
-        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // index 0: Row0 (D0)
-        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // index 1: Row1 (D1)
-        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // index 2: Row2 (D2)
-        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // index 3: Row3 (D3)
-        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // index 4: Row4 (D4)
-        , <&xiao_d 5 GPIO_ACTIVE_HIGH> // index 5: Col0 (D5)
-        , <&xiao_d 6 GPIO_ACTIVE_HIGH> // index 6: Col1 (D6)
-        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // index 7: Col2 (D7)
-        , <&xiao_d 8 GPIO_ACTIVE_HIGH> // index 8: Col3 (D8)
+        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // Row0
+        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // Row1
+        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // Row2
+        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // Row3
+        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // Row4
+        , <&xiao_d 5 GPIO_ACTIVE_HIGH> // Col0
+        , <&xiao_d 6 GPIO_ACTIVE_HIGH> // Col1
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // Col2
+        , <&xiao_d 8 GPIO_ACTIVE_HIGH> // Col3
         ;
 };
