@@ -6,11 +6,11 @@
         zmk,physical-layout = &layout_main;
     };
 
-    /* デュプレックス・マトリックスの論理変換（5行×8列想定） */
+    /* デュプレックス・マトリックスの論理変換（5行×16列想定） */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
-        columns = <16>; // 左右合計 (8列 × 2)
-        rows = <5>;    // 行数
+        columns = <16>;
+        rows = <5>;
 
         map = <
             /* 左手側 (26個) */
@@ -27,74 +27,73 @@
         >;
     };
 
-    /* ZMK Studio 用の物理座標定義（KLEのレイアウトを再現） */
+    /* ZMK Studio 用の物理座標定義 */
     layout_main: layout_main {
         compatible = "zmk,physical-layout";
         display-name = "Default Layout";
         transform = <&default_transform>;
         kscan = <&kscan0>;
 
-        /* 100 = 1Uサイズ */
+        /* 100 = 1Uサイズ。&physical_attrs に修正 */
         keys
             /* 左手側 */
-            = <&direct_physical_attrs 100 100   0   0 0> // ESC
-            , <&direct_physical_attrs 100 100 100   0 0> // Q
-            , <&direct_physical_attrs 100 100 200   0 0> // W
-            , <&direct_physical_attrs 100 100 300   0 0> // E
-            , <&direct_physical_attrs 100 100 400  50 0> // R
-            , <&direct_physical_attrs 100 100 500  50 0> // T
-            , <&direct_physical_attrs 100 100   0 100 0> // Tab
-            , <&direct_physical_attrs 100 100 100 100 0> // A
-            , <&direct_physical_attrs 100 100 200 100 0> // S
-            , <&direct_physical_attrs 100 100 300 100 0> // D
-            , <&direct_physical_attrs 100 100 400 150 0> // F
-            , <&direct_physical_attrs 100 100 500 150 0> // G
-            , <&direct_physical_attrs 100 100   0 200 0> // Shift
-            , <&direct_physical_attrs 100 100 100 200 0> // Z
-            , <&direct_physical_attrs 100 100 200 200 0> // X
-            , <&direct_physical_attrs 100 100 300 200 0> // C
-            , <&direct_physical_attrs 100 100 400 250 0> // V
-            , <&direct_physical_attrs 100 100 500 250 0> // B(L)
-            , <&direct_physical_attrs 100 100 600 250 0> // L-In1
-            , <&direct_physical_attrs 100 100   0 300 0> // Ctrl
-            , <&direct_physical_attrs 100 100 100 300 0> // Win
-            , <&direct_physical_attrs 100 100 200 300 0> // Alt
-            , <&direct_physical_attrs 100 100 300 300 0> // 無変換
-            , <&direct_physical_attrs 100 100 400 350 0> // Space
-            , <&direct_physical_attrs 100 100 500 350 0> // L-In2
-            , <&direct_physical_attrs 100 100 600 350 0> // L-In3
+            = <&physical_attrs 100 100   0   0 0> // ESC
+            , <&physical_attrs 100 100 100   0 0> // Q
+            , <&physical_attrs 100 100 200   0 0> // W
+            , <&physical_attrs 100 100 300   0 0> // E
+            , <&physical_attrs 100 100 400  50 0> // R
+            , <&physical_attrs 100 100 500  50 0> // T
+            , <&physical_attrs 100 100   0 100 0> // Tab
+            , <&physical_attrs 100 100 100 100 0> // A
+            , <&physical_attrs 100 100 200 100 0> // S
+            , <&physical_attrs 100 100 300 100 0> // D
+            , <&physical_attrs 100 100 400 150 0> // F
+            , <&physical_attrs 100 100 500 150 0> // G
+            , <&physical_attrs 100 100   0 200 0> // Shift
+            , <&physical_attrs 100 100 100 200 0> // Z
+            , <&physical_attrs 100 100 200 200 0> // X
+            , <&physical_attrs 100 100 300 200 0> // C
+            , <&physical_attrs 100 100 400 250 0> // V
+            , <&physical_attrs 100 100 500 250 0> // B(L)
+            , <&physical_attrs 100 100 600 250 0> // L-In1
+            , <&physical_attrs 100 100   0 300 0> // Ctrl
+            , <&physical_attrs 100 100 100 300 0> // Win
+            , <&physical_attrs 100 100 200 300 0> // Alt
+            , <&physical_attrs 100 100 300 300 0> // 無変換
+            , <&physical_attrs 100 100 400 350 0> // Space
+            , <&physical_attrs 100 100 500 350 0> // L-In2
+            , <&physical_attrs 100 100 600 350 0> // L-In3
 
             /* 右手側 */
-            , <&direct_physical_attrs 100 100 1100   0 0> // I
-            , <&direct_physical_attrs 100 100 1200   0 0> // O
-            , <&direct_physical_attrs 100 100 1300   0 0> // P
-            , <&direct_physical_attrs 100 100 1400   0 0> // ;
-            , <&direct_physical_attrs 100 100  900  50 0> // Y
-            , <&direct_physical_attrs 100 100 1000  50 0> // U
-            , <&direct_physical_attrs 100 100 1100 100 0> // K
-            , <&direct_physical_attrs 100 100 1200 100 0> // L
-            , <&direct_physical_attrs 100 100 1300 100 0> // @
-            , <&direct_physical_attrs 100 100 1400 100 0> // :
-            , <&direct_physical_attrs 100 100  900 150 0> // H
-            , <&direct_physical_attrs 100 100 1000 150 0> // J
-            , <&direct_physical_attrs 100 100 1100 200 0> // ,
-            , <&direct_physical_attrs 100 100 1200 200 0> // .
-            , <&direct_physical_attrs 100 100 1300 200 0> // /
-            , <&direct_physical_attrs 100 100 1400 200 0> // \
-            , <&direct_physical_attrs 100 100  800 250 0> // B(R)
-            , <&direct_physical_attrs 100 100  900 250 0> // N
-            , <&direct_physical_attrs 100 100 1000 250 0> // M
-            , <&direct_physical_attrs 100 100 1100 300 0> // R-In1
-            , <&direct_physical_attrs 100 100 1200 300 0> // R-In2
-            , <&direct_physical_attrs 100 100 1300 300 0> // R-In3
-            , <&direct_physical_attrs 100 100 1400 300 0> // R-In4
-            , <&direct_physical_attrs 100 100  800 350 0> // Enter
-            , <&direct_physical_attrs 100 100  900 350 0> // BS
-            , <&direct_physical_attrs 100 100 1000 350 0> // Del
+            , <&physical_attrs 100 100 1100   0 0> // I
+            , <&physical_attrs 100 100 1200   0 0> // O
+            , <&physical_attrs 100 100 1300   0 0> // P
+            , <&physical_attrs 100 100 1400   0 0> // ;
+            , <&physical_attrs 100 100  900  50 0> // Y
+            , <&physical_attrs 100 100 1000  50 0> // U
+            , <&physical_attrs 100 100 1100 100 0> // K
+            , <&physical_attrs 100 100 1200 100 0> // L
+            , <&physical_attrs 100 100 1300 100 0> // @
+            , <&physical_attrs 100 100 1400 100 0> // :
+            , <&physical_attrs 100 100  900 150 0> // H
+            , <&physical_attrs 100 100 1000 150 0> // J
+            , <&physical_attrs 100 100 1100 200 0> // ,
+            , <&physical_attrs 100 100 1200 200 0> // .
+            , <&physical_attrs 100 100 1300 200 0> // /
+            , <&physical_attrs 100 100 1400 200 0> // \
+            , <&physical_attrs 100 100  800 250 0> // B(R)
+            , <&physical_attrs 100 100  900 250 0> // N
+            , <&physical_attrs 100 100 1000 250 0> // M
+            , <&physical_attrs 100 100 1100 300 0> // R-In1
+            , <&physical_attrs 100 100 1200 300 0> // R-In2
+            , <&physical_attrs 100 100 1300 300 0> // R-In3
+            , <&physical_attrs 100 100 1400 300 0> // R-In4
+            , <&physical_attrs 100 100  800 350 0> // Enter
+            , <&physical_attrs 100 100  900 350 0> // BS
+            , <&physical_attrs 100 100 1000 350 0> // Del
             ;
     };
 
-    /* スキャン設定の器を定義 */
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
         wakeup-source;
