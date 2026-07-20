@@ -1,9 +1,27 @@
 #include "tellurium52.dtsi"
 
-&kscan0 {
-    // 既存のピン設定（col-gpios, row-gpios）
+&default_transform {
+    col-offset = <8>; // 左手が論理的に8列使用するため、右手は8列目から開始
 };
 
-&default_transform {
-    col-offset = <4>;
+&kscan0 {
+    row-gpios
+        = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        , <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        , <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        , <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        ;
+
+    col-gpios
+        = <&xiao_d 5 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 6 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 8 GPIO_ACTIVE_HIGH>
+        /* デュプレックス用の仮想列 */
+        , <&xiao_d 5 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 6 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 8 GPIO_ACTIVE_HIGH>
+        ;
 };
