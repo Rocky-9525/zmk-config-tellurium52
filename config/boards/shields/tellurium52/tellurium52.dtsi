@@ -1,6 +1,40 @@
-/* chosen ノードを以下のように書き換えてください */
+#include <dt-bindings/zmk/matrix_transform.h>
+
+/ {
+    /* chosen の中も、純粋なキースキャンとマトリクス変換の2つだけに絞ります */
     chosen {
         zmk,kscan = &kscan0;
-        zmk,matrix-transform = &default_transform; /* 一時的にこれを復活させます */
-        /* zmk,physical-layout は一時的に不要になるため削除またはコメントアウト */
+        zmk,matrix-transform = &default_transform;
     };
+
+    /* 双方向総当たりスキャン（9ピン×18列）用のマトリクス変換マップ */
+    default_transform: keymap_transform_0 {
+        compatible = "zmk,matrix-transform";
+        columns = <18>;
+        rows = <9>;
+        map = <
+            /* 左手 26キー */
+            RC(0,5) RC(0,6) RC(0,7) RC(5,0) RC(6,0) RC(7,0)
+            RC(1,5) RC(1,6) RC(1,7) RC(5,1) RC(6,1) RC(7,1)
+            RC(2,5) RC(2,6) RC(2,7) RC(5,2) RC(6,2) RC(7,2) RC(5,4)
+            RC(3,5) RC(3,6) RC(5,3) RC(6,3) RC(4,5) RC(4,6) RC(6,4)
+            
+            /* 右手 26キー (col-offset = 9) */
+            RC(0,14) RC(0,15) RC(0,16) RC(5,9)  RC(6,9)  RC(7,9)
+            RC(1,14) RC(1,15) RC(1,16) RC(5,10) RC(6,10) RC(7,10)
+            RC(2,14) RC(2,15) RC(2,16) RC(5,11) RC(6,11) RC(7,11) RC(5,13)
+            RC(3,14) RC(3,15) RC(5,12) RC(6,12) RC(4,14) RC(4,15) RC(6,13)
+        >;
+    };
+
+    /* 双方向総当たりスキャンドライバ（Charlieplex） */
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-charlieplex";
+        wakeup-source;
+    };
+};
+
+/* D9/D10ピンをNFC機能から完全に解放する命令 */
+&uicr {
+    nfct-pins-as-gpios;
+};
