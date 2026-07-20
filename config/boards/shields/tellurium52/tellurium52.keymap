@@ -5,7 +5,6 @@
 / {
     keymap {
         compatible = "zmk,keymap";
-
         default_layer {
             bindings = <
                 /* 左手 26キー */
@@ -20,7 +19,6 @@
                 &kp ENTER &kp BSPC &kp DEL &kp ENTER &kp BSPC &kp DEL &kp ENTER
             >;
         };
-
         layer_1 {
             bindings = <
                 /* 左手 26キー */
