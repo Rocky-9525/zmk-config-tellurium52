@@ -1,4 +1,8 @@
-#include "tellurium52_L.overlay"
+#include "tellurium52.dtsi"
+
+&kscan0 {
+    // 既存のピン設定（col-gpios, row-gpios）
+};
 
 &default_transform {
     col-offset = <4>;
