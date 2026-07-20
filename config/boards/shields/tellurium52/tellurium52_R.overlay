@@ -1,7 +1,7 @@
 #include "tellurium52.dtsi"
 
 &default_transform {
-    col-offset = <8>; // 左手が論理的に8列使用するため、右手は8列目から開始
+    col-offset = <8>;
 };
 
 &kscan0 {
@@ -18,7 +18,6 @@
         , <&xiao_d 6 GPIO_ACTIVE_HIGH>
         , <&xiao_d 7 GPIO_ACTIVE_HIGH>
         , <&xiao_d 8 GPIO_ACTIVE_HIGH>
-        /* デュプレックス用の仮想列 */
         , <&xiao_d 5 GPIO_ACTIVE_HIGH>
         , <&xiao_d 6 GPIO_ACTIVE_HIGH>
         , <&xiao_d 7 GPIO_ACTIVE_HIGH>
