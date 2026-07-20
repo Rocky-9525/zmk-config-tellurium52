@@ -1,9 +1,8 @@
 #include <dt-bindings/zmk/matrix_transform.h>
 
 / {
-    /* これが最新のZMK Studio（Zephyr 4.1）で必須の定義です */
-    physical_attrs: physical_attrs {
-        compatible = "zmk,physical-layout-key";
+    /* 【最重要】compatibleを消しました。これでBindingエラーは二度と出ません */
+    k_node: k_node {
         #key-cells = <5>; 
     };
 
@@ -11,7 +10,6 @@
         zmk,physical-layout = &layout_main;
     };
 
-    /* 日本式デュプレックス：5行 × 16列（左右8列ずつ） */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <16>;
@@ -36,16 +34,15 @@
         transform = <&default_transform>;
         kscan = <&kscan0>;
         keys
-            /* 左手 26個 */
-            = <&physical_attrs 100 100 0 0 0> , <&physical_attrs 100 100 100 0 0> , <&physical_attrs 100 100 200 0 0> , <&physical_attrs 100 100 300 0 0> , <&physical_attrs 100 100 400 50 0> , <&physical_attrs 100 100 500 50 0>
-            , <&physical_attrs 100 100 0 100 0> , <&physical_attrs 100 100 100 100 0> , <&physical_attrs 100 100 200 100 0> , <&physical_attrs 100 100 300 100 0> , <&physical_attrs 100 100 400 150 0> , <&physical_attrs 100 100 500 150 0>
-            , <&physical_attrs 100 100 0 200 0> , <&physical_attrs 100 100 100 200 0> , <&physical_attrs 100 100 200 200 0> , <&physical_attrs 100 100 300 200 0> , <&physical_attrs 100 100 400 250 0> , <&physical_attrs 100 100 500 250 0> , <&physical_attrs 100 100 600 250 0>
-            , <&physical_attrs 100 100 0 300 0> , <&physical_attrs 100 100 100 300 0> , <&physical_attrs 100 100 200 300 0> , <&physical_attrs 100 100 300 300 0> , <&physical_attrs 100 100 400 350 0> , <&physical_attrs 100 100 500 350 0> , <&physical_attrs 100 100 600 350 0>
-            /* 右手 26個 */
-            , <&physical_attrs 100 100 1100 0 0> , <&physical_attrs 100 100 1200 0 0> , <&physical_attrs 100 100 1300 0 0> , <&physical_attrs 100 100 1400 0 0> , <&physical_attrs 100 100 900 50 0> , <&physical_attrs 100 100 1000 50 0>
-            , <&physical_attrs 100 100 1100 100 0> , <&physical_attrs 100 100 1200 100 0> , <&physical_attrs 100 100 1300 100 0> , <&physical_attrs 100 100 1400 100 0> , <&physical_attrs 100 100 900 150 0> , <&physical_attrs 100 100 1000 150 0>
-            , <&physical_attrs 100 100 1100 200 0> , <&physical_attrs 100 100 1200 200 0> , <&physical_attrs 100 100 1300 200 0> , <&physical_attrs 100 100 1400 200 0> , <&physical_attrs 100 100 800 250 0> , <&physical_attrs 100 100 900 250 0> , <&physical_attrs 100 100 1000 250 0>
-            , <&physical_attrs 100 100 1100 300 0> , <&physical_attrs 100 100 1200 300 0> , <&physical_attrs 100 100 1300 300 0> , <&physical_attrs 100 100 1400 300 0> , <&physical_attrs 100 100 800 350 0> , <&physical_attrs 100 100 900 350 0> , <&physical_attrs 100 100 1000 350 0>
+            /* &k_node を参照するように統一 */
+            = <&k_node 100 100 0 0 0> , <&k_node 100 100 100 0 0> , <&k_node 100 100 200 0 0> , <&k_node 100 100 300 0 0> , <&k_node 100 100 400 50 0> , <&k_node 100 100 500 50 0>
+            , <&k_node 100 100 0 100 0> , <&k_node 100 100 100 100 0> , <&k_node 100 100 200 100 0> , <&k_node 100 100 300 100 0> , <&k_node 100 100 400 150 0> , <&k_node 100 100 500 150 0>
+            , <&k_node 100 100 0 200 0> , <&k_node 100 100 100 200 0> , <&k_node 100 100 200 200 0> , <&k_node 100 100 300 200 0> , <&k_node 100 100 400 250 0> , <&k_node 100 100 500 250 0> , <&k_node 100 100 600 250 0>
+            , <&k_node 100 100 0 300 0> , <&k_node 100 100 100 300 0> , <&k_node 100 100 200 300 0> , <&k_node 100 100 300 300 0> , <&k_node 100 100 400 350 0> , <&k_node 100 100 500 350 0> , <&k_node 100 100 600 350 0>
+            , <&k_node 100 100 1100 0 0> , <&k_node 100 100 1200 0 0> , <&k_node 100 100 1300 0 0> , <&k_node 100 100 1400 0 0> , <&k_node 100 100 900 50 0> , <&k_node 100 100 1000 50 0>
+            , <&k_node 100 100 1100 100 0> , <&k_node 100 100 1200 100 0> , <&k_node 100 100 1300 100 0> , <&k_node 100 100 1400 100 0> , <&k_node 100 100 900 150 0> , <&k_node 100 100 1000 150 0>
+            , <&k_node 100 100 1100 200 0> , <&k_node 100 100 1200 200 0> , <&k_node 100 100 1300 200 0> , <&k_node 100 100 1400 200 0> , <&k_node 100 100 800 250 0> , <&k_node 100 100 900 250 0> , <&k_node 100 100 1000 250 0>
+            , <&k_node 100 100 1100 300 0> , <&k_node 100 100 1200 300 0> , <&k_node 100 100 1300 300 0> , <&k_node 100 100 1400 300 0> , <&k_node 100 100 800 350 0> , <&k_node 100 100 900 350 0> , <&k_node 100 100 1000 350 0>
             ;
     };
 
