@@ -1,26 +1,22 @@
 #include <dt-bindings/zmk/matrix_transform.h>
-#include <physical_layouts.dtsi> /* 【重要】ZMK公式のレイアウトライブラリ */
+#include <physical_layouts.dtsi>
 
 / {
-    /* 【重要】chosen内の zmk,matrix-transform は不要になったため削除し、スキャン用の zmk,kscan とレイアウトを登録します */
     chosen {
         zmk,kscan = &kscan0;
         zmk,physical-layout = &layout_main;
     };
 
-    /* 双方向総当たりスキャン（9ピン×18列）用のマトリクス変換マップ */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <18>;
         rows = <9>;
         map = 
-            /* 左手 26キー */
             RC(0,5) RC(0,6) RC(0,7) RC(5,0) RC(6,0) RC(7,0)
             RC(1,5) RC(1,6) RC(1,7) RC(5,1) RC(6,1) RC(7,1)
             RC(2,5) RC(2,6) RC(2,7) RC(5,2) RC(6,2) RC(7,2) RC(5,4)
             RC(3,5) RC(3,6) RC(5,3) RC(6,3) RC(4,5) RC(4,6) RC(6,4)
-            
-            /* 右手 26キー (col-offset = 9) */
+
             RC(0,14) RC(0,15) RC(0,16) RC(5,9)  RC(6,9)  RC(7,9)
             RC(1,14) RC(1,15) RC(1,16) RC(5,10) RC(6,10) RC(7,10)
             RC(2,14) RC(2,15) RC(2,16) RC(5,11) RC(6,11) RC(7,11) RC(5,13)
@@ -34,13 +30,10 @@
         transform = <&default_transform>;
         kscan = <&kscan0>;
         keys
-            /* 左右52個、すべてのキーを公式の 7パラメータ `&key_physical_attrs` に統一 */
-            /* 左手 26個 */
             = <&key_physical_attrs 100 100   0   0 0 0 0> , <&key_physical_attrs 100 100 100   0 0 0 0> , <&key_physical_attrs 100 100 200   0 0 0 0> , <&key_physical_attrs 100 100 300   0 0 0 0> , <&key_physical_attrs 100 100 400  50 0 0 0> , <&key_physical_attrs 100 100 500  50 0 0 0>
             , <&key_physical_attrs 100 100   0 100 0 0 0> , <&key_physical_attrs 100 100 100 100 0 0 0> , <&key_physical_attrs 100 100 200 100 0 0 0> , <&key_physical_attrs 100 100 300 100 0 0 0> , <&key_physical_attrs 100 100 400 150 0 0 0> , <&key_physical_attrs 100 100 500 150 0 0 0>
             , <&key_physical_attrs 100 100   0 200 0 0 0> , <&key_physical_attrs 100 100 100 200 0 0 0> , <&key_physical_attrs 100 100 200 200 0 0 0> , <&key_physical_attrs 100 100 300 200 0 0 0> , <&key_physical_attrs 100 100 400 250 0 0 0> , <&key_physical_attrs 100 100 500 250 0 0 0> , <&key_physical_attrs 100 100 600 250 0 0 0>
             , <&key_physical_attrs 100 100   0 300 0 0 0> , <&key_physical_attrs 100 100 100 300 0 0 0> , <&key_physical_attrs 100 100 200 300 0 0 0> , <&key_physical_attrs 100 100 300 300 0 0 0> , <&key_physical_attrs 100 100 400 350 0 0 0> , <&key_physical_attrs 100 100 500 350 0 0 0> , <&key_physical_attrs 100 100 600 350 0 0 0>
-            /* 右手 26個 */
             , <&key_physical_attrs 100 100 1100   0 0 0 0> , <&key_physical_attrs 100 100 1200   0 0 0 0> , <&key_physical_attrs 100 100 1300   0 0 0 0> , <&key_physical_attrs 100 100 1400   0 0 0 0> , <&key_physical_attrs 100 100  900  50 0 0 0> , <&key_physical_attrs 100 100 1000  50 0 0 0>
             , <&key_physical_attrs 100 100 1100 100 0 0 0> , <&key_physical_attrs 100 100 1200 100 0 0 0> , <&key_physical_attrs 100 100 1300 100 0 0 0> , <&key_physical_attrs 100 100 1400 100 0 0 0> , <&key_physical_attrs 100 100  900 150 0 0 0> , <&key_physical_attrs 100 100 1000 150 0 0 0>
             , <&key_physical_attrs 100 100 1100 200 0 0 0> , <&key_physical_attrs 100 100 1200 200 0 0 0> , <&key_physical_attrs 100 100 1300 200 0 0 0> , <&key_physical_attrs 100 100 1400 200 0 0 0> , <&key_physical_attrs 100 100  800 250 0 0 0> , <&key_physical_attrs 100 100  900 250 0 0 0> , <&key_physical_attrs 100 100 1000 250 0 0 0>
@@ -54,12 +47,10 @@
     };
 };
 
-/* D9/D10ピンをNFC機能から完全に解放し、システム起動時のクラッシュを防止する命令 */
 &uicr {
     nfct-pins-as-gpios;
 };
 
-/* D6・D7・D8ピンと衝突する、未使用の周辺機能(UART/I2C/SPI)を無効化 */
 &uart0 {
     status = "disabled";
 };
