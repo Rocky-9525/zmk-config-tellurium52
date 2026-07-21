@@ -21,8 +21,8 @@
     keymap {
         compatible = "zmk,keymap";
         default_layer {
-            // 親機(右手)のセンサーを先、子機(左手)のセンサーを後に書く決まりです
-            sensor-bindings = <&scroll_horizontal &scroll_vertical>;
+            // マトリクス検証のため一時的にコメントアウト(エンコーダー無効化に合わせて)
+            // sensor-bindings = <&scroll_horizontal &scroll_vertical>;
             bindings = <
                 /* 左手 26キー */
                 &kp ESC &kp Q &kp W &kp E &kp R &kp T
