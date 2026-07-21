@@ -13,7 +13,7 @@
         compatible = "zmk,matrix-transform";
         columns = <18>;
         rows = <9>;
-        map = <
+        map = 
             /* 左手 26キー */
             RC(0,5) RC(0,6) RC(0,7) RC(5,0) RC(6,0) RC(7,0)
             RC(1,5) RC(1,6) RC(1,7) RC(5,1) RC(6,1) RC(7,1)
@@ -57,4 +57,17 @@
 /* D9/D10ピンをNFC機能から完全に解放し、システム起動時のクラッシュを防止する命令 */
 &uicr {
     nfct-pins-as-gpios;
+};
+
+/* D6・D7・D8ピンと衝突する、未使用の周辺機能(UART/I2C/SPI)を無効化 */
+&uart0 {
+    status = "disabled";
+};
+
+&i2c1 {
+    status = "disabled";
+};
+
+&spi2 {
+    status = "disabled";
 };
