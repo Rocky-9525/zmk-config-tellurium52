@@ -44,13 +44,16 @@
     debounce-release-ms = <50>;
 
     // 通常の5行x4列に戻す。待ち時間はconfで大きく設定して電荷の減衰を待つ。
-    // row2col: 行が駆動側、列が読み取り側。プルダウンは列側。
+    // 【切り分け】スキャン順を逆にする。行の並びを Row4→Row0 にした。
+    //   出る文字が変わる -> 電荷の持ち越し(プルダウン不足)= 抵抗で直せる
+    //   同じ文字のまま   -> 複数行が同時通電している
+    // 逆順なので index0=Row4, index1=Row3, index2=Row2, index3=Row1, index4=Row0
     row-gpios
-        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // Row0(駆動)
-        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // Row1
-        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // Row2
-        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // Row3
-        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // Row4
+        = <&xiao_d 4 GPIO_ACTIVE_HIGH> // index0: Row4
+        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // index1: Row3
+        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // index2: Row2
+        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // index3: Row1
+        , <&xiao_d 0 GPIO_ACTIVE_HIGH> // index4: Row0
         ;
 
     col-gpios
