@@ -21,13 +21,13 @@
 };
 
 &kscan0 {
-    // 【最小再現テスト】3本(d0,d1,d7)。イベントは (0,2) と (1,2) に出る。
-    // 下で transform の position 0,1 を RC(0,2), RC(1,2) に差し替えたので
-    //   "a" だけ -> 3本では正常
-    //   "aq"     -> 行1本足すだけで幽霊が出る = 最小再現
+    // 【切り分け】スイッチが繋ぐ d0 を「外して」d1,d2,d7 の3本にする。
+    // d0を駆動しないので、スイッチ経由で電気が入る道は理屈上存在しない。
+    //   何も打たれない -> d0の駆動が必要(ドライバ/残留電荷側)
+    //   a や q が出る  -> d1/d2 から d7 へ漏れている(ハードの漏れ確定)
     gpios
-        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // 0番: Row0
-        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // 1番: Row1
+        = <&xiao_d 1 GPIO_ACTIVE_HIGH> // 0番: Row1
+        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // 1番: Row2
         , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 2番: Col2
         ;
 };
