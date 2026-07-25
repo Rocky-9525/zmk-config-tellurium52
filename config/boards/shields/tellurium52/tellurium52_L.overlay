@@ -36,18 +36,20 @@
     diode-direction = "row2col";
     /delete-property/ gpios;
 
-    // 【行どうしの短絡テスト】Row0だけを駆動し、他の行を読み取り側に回す。
-    // 行が繋がっていれば、何も触らなくても a/b/c/d が出続ける。
-    //   A = Row0-Row1、B = Row0-Row2、C = Row0-Row3、D = Row0-Row4
+    // 通常の5行x4列に戻す。待ち時間はconfで大きく設定して電荷の減衰を待つ。
     row-gpios
-        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // Row0(唯一の駆動側)
+        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // Row0
+        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // Row1
+        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // Row2
+        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // Row3
+        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // Row4
         ;
 
     col-gpios
-        = <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row1を読む -> A
-        , <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row2を読む -> B
-        , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row3を読む -> C
-        , <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row4を読む -> D
+        = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col0
+        , <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col1
+        , <&xiao_d 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col2
+        , <&xiao_d 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col3
         ;
 };
 
