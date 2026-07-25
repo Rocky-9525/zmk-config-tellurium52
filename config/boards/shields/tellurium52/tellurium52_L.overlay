@@ -42,19 +42,24 @@
     debounce-release-ms = <8>;
 
     // 通常の5行x4列に戻す。待ち時間はconfで大きく設定して電荷の減衰を待つ。
+    // 【重要】xiao_d の中継定義を経由するとプルダウン指定が失われている疑いがあるため、
+    // GPIOコントローラ(gpio0/gpio1)を直接指定する。
+    // XIAO nRF52840 のピン対応:
+    //   D0=P0.02 D1=P0.03 D2=P0.28 D3=P0.29 D4=P0.04
+    //   D5=P0.05 D6=P1.11 D7=P1.12 D8=P1.13
     row-gpios
-        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // Row0
-        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // Row1
-        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // Row2
-        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // Row3
-        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // Row4
+        = <&gpio0  2 GPIO_ACTIVE_HIGH> // D0 = Row0
+        , <&gpio0  3 GPIO_ACTIVE_HIGH> // D1 = Row1
+        , <&gpio0 28 GPIO_ACTIVE_HIGH> // D2 = Row2
+        , <&gpio0 29 GPIO_ACTIVE_HIGH> // D3 = Row3
+        , <&gpio0  4 GPIO_ACTIVE_HIGH> // D4 = Row4
         ;
 
     col-gpios
-        = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col0(読み取り)
-        , <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col1
-        , <&xiao_d 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col2
-        , <&xiao_d 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col3
+        = <&gpio0  5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // D5 = Col0
+        , <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // D6 = Col1
+        , <&gpio1 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // D7 = Col2
+        , <&gpio1 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // D8 = Col3
         ;
 };
 
