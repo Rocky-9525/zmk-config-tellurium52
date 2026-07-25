@@ -4,7 +4,7 @@
 // position 0 = RC(0,2) -> A、position 1 = RC(1,2) -> Q。他は元のまま。
 &default_transform {
     map = <
-        RC(0,2) RC(1,2) RC(2,5) RC(3,5) RC(4,5) RC(0,6)
+        RC(0,1) RC(1,0) RC(2,5) RC(3,5) RC(4,5) RC(0,6)
         RC(1,6) RC(2,6) RC(3,6) RC(4,6) RC(0,7) RC(1,7)
         RC(2,7) RC(5,0) RC(5,1) RC(5,2) RC(5,3) RC(5,4)
         RC(6,0) RC(6,1) RC(6,2) RC(6,3) RC(6,4) RC(7,0)
@@ -21,14 +21,13 @@
 };
 
 &kscan0 {
-    // 【残留電荷の検証】3本(d0,d1,d7)に戻し、待ち時間を大幅に伸ばして再テスト。
-    // position0=RC(0,2)->A、position1=RC(1,2)->Q
-    //   "a" だけ -> 残留電荷が原因(待ち時間で解決できる)
-    //   "aq"     -> 電荷ではない(プルダウンが効いていない疑い)
+    // 【Row1-Col2の常時導通テスト】d1とd7だけ。何も押さずに観察する。
+    // position0=RC(0,1)->A(d1駆動→d7が高)、position1=RC(1,0)->Q(d7駆動→d1が高)
+    //   何も押さないのに文字が出る -> Row1とCol2が常時繋がっている(SW12ソケット短絡など)
+    //   何も出ない                 -> その経路は正常
     gpios
-        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // 0番: Row0
-        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // 1番: Row1
-        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 2番: Col2
+        = <&xiao_d 1 GPIO_ACTIVE_HIGH> // 0番: Row1
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 1番: Col2
         ;
 };
 
