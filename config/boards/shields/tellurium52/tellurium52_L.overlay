@@ -4,7 +4,7 @@
 // position 0 = RC(0,2) -> A、position 1 = RC(1,2) -> Q。他は元のまま。
 &default_transform {
     map = <
-        RC(0,1) RC(1,0) RC(2,5) RC(3,5) RC(4,5) RC(0,6)
+        RC(0,2) RC(1,2) RC(2,5) RC(3,5) RC(4,5) RC(0,6)
         RC(1,6) RC(2,6) RC(3,6) RC(4,6) RC(0,7) RC(1,7)
         RC(2,7) RC(5,0) RC(5,1) RC(5,2) RC(5,3) RC(5,4)
         RC(6,0) RC(6,1) RC(6,2) RC(6,3) RC(6,4) RC(7,0)
@@ -21,14 +21,14 @@
 };
 
 &kscan0 {
-    // 【行どうしの短絡テスト】列を使わず行2本だけをスキャンする。
-    // 設計上 Row0 と Row1 は独立しているので、正常なら何も検出されないはず。
-    // transform の position0=RC(0,1)->A、position1=RC(1,0)->Q に割り当て済み。
-    //   何も押さないのに a / q が出る -> 行どうしが繋がっている(確定)
-    //   何も出ない                    -> 行は正常
+    // 【残留電荷の検証】3本(d0,d1,d7)に戻し、待ち時間を大幅に伸ばして再テスト。
+    // position0=RC(0,2)->A、position1=RC(1,2)->Q
+    //   "a" だけ -> 残留電荷が原因(待ち時間で解決できる)
+    //   "aq"     -> 電荷ではない(プルダウンが効いていない疑い)
     gpios
         = <&xiao_d 0 GPIO_ACTIVE_HIGH> // 0番: Row0
         , <&xiao_d 1 GPIO_ACTIVE_HIGH> // 1番: Row1
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 2番: Col2
         ;
 };
 
