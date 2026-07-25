@@ -1,18 +1,34 @@
 #include "tellurium52.dtsi"
 
+// 【検証用】3本テストのイベント座標を見える位置に割り当てる。
+// position 0 = RC(0,2) -> A、position 1 = RC(1,2) -> Q。他は元のまま。
+&default_transform {
+    map = <
+        RC(0,2) RC(1,2) RC(2,5) RC(3,5) RC(4,5) RC(0,6)
+        RC(1,6) RC(2,6) RC(3,6) RC(4,6) RC(0,7) RC(1,7)
+        RC(2,7) RC(5,0) RC(5,1) RC(5,2) RC(5,3) RC(5,4)
+        RC(6,0) RC(6,1) RC(6,2) RC(6,3) RC(6,4) RC(7,0)
+        RC(7,1) RC(7,2)
+
+        RC(0,14) RC(1,14) RC(2,14) RC(3,14) RC(4,14) RC(0,15)
+        RC(1,15) RC(2,15) RC(3,15) RC(4,15) RC(0,16) RC(1,16)
+        RC(2,16) RC(5,9) RC(5,10) RC(5,11) RC(5,12) RC(5,13)
+        RC(6,9) RC(6,10) RC(6,11) RC(6,12) RC(6,13) RC(7,9)
+        RC(7,10) RC(7,11)
+
+        RC(0,8) RC(0,17)
+    >;
+};
+
 &kscan0 {
-    // 【ログ不要テスト】6本構成に戻す。幽霊は (0,5)(1,5)(2,5)(3,5)(4,5) に出る。
-    // これらは keymap の position 0〜4 = A(変更済) Q W E R に対応するので、
-    // メモ帳に打たれた文字で幽霊の有無が判定できる。
-    //   "a" だけ    -> 正常
-    //   "aqwer"     -> 幽霊4つ
+    // 【最小再現テスト】3本(d0,d1,d7)。イベントは (0,2) と (1,2) に出る。
+    // 下で transform の position 0,1 を RC(0,2), RC(1,2) に差し替えたので
+    //   "a" だけ -> 3本では正常
+    //   "aq"     -> 行1本足すだけで幽霊が出る = 最小再現
     gpios
         = <&xiao_d 0 GPIO_ACTIVE_HIGH> // 0番: Row0
         , <&xiao_d 1 GPIO_ACTIVE_HIGH> // 1番: Row1
-        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // 2番: Row2
-        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // 3番: Row3
-        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // 4番: Row4
-        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 5番: Col2
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 2番: Col2
         ;
 };
 
