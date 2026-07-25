@@ -36,6 +36,12 @@
     diode-direction = "row2col";
     /delete-property/ gpios;
 
+    // 【本命】チャタリング除去を強めに設定する。
+    // 押した瞬間の数ミリ秒だけ暴れる幽霊イベントをフィルタする。
+    // 長押し中は正しく1キーだけなので、過渡的なノイズさえ除ければ正常になる。
+    debounce-press-ms = <30>;
+    debounce-release-ms = <30>;
+
     // 通常の5行x4列に戻す。待ち時間はconfで大きく設定して電荷の減衰を待つ。
     row-gpios
         = <&xiao_d 0 GPIO_ACTIVE_HIGH> // Row0
