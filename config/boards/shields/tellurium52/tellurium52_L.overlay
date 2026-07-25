@@ -1,14 +1,16 @@
 #include "tellurium52.dtsi"
 
 &kscan0 {
-    // 【最小構成テスト】ピンを2本だけにする。
-    // 挿している1個のスイッチが使う xiao_d0(Row0) と xiao_d7(Col2) のみ。
-    // 2本しかなければ幽霊が生まれる余地は構造的に無い。
-    // 期待: 押すと "Sending event at 0,1"(または1,0)が1回だけ出る。
-    // ※transformとは合わないので "Not found in transform" 警告が出るのは正常。生ログで判定する。
+    // 【段階テスト2】2本(d0,d7)は完全に正常だった。行を全部足して6本にする。
+    // 期待: 押すと "Sending event at 0,5" が1回だけ出る(d7が5番目のため)。
+    // 幽霊(1,5 / 2,5 …)が出たら犯人は行ピンの中。出なければ d5・d6・d8 の中。
     gpios
         = <&xiao_d 0 GPIO_ACTIVE_HIGH> // 0番: Row0
-        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 1番: Col2
+        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // 1番: Row1
+        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // 2番: Row2
+        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // 3番: Row3
+        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // 4番: Row4
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 5番: Col2
         ;
 };
 
