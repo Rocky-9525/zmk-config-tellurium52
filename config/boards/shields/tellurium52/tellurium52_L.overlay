@@ -33,29 +33,32 @@
 // SW11 は Row0 x Col2 なので、押すと RC(0,2) -> position0 -> "a" が1文字だけ出るはず。
 &kscan0 {
     compatible = "zmk,kscan-gpio-matrix";
-    diode-direction = "row2col";
+    // 【本命】D1〜D13は図面と逆向きに実装されている(基板の角度180度+写真の帯位置から確認)。
+    // よって電流は Col -> Row に流れる。走査方向を col2row にする。
+    diode-direction = "col2row";
     /delete-property/ gpios;
 
     // 【本命】チャタリング除去を強めに設定する。
     // 押した瞬間の数ミリ秒だけ暴れる幽霊イベントをフィルタする。
     // 長押し中は正しく1キーだけなので、過渡的なノイズさえ除ければ正常になる。
-    debounce-press-ms = <30>;
-    debounce-release-ms = <30>;
+    debounce-press-ms = <50>;
+    debounce-release-ms = <50>;
 
     // 通常の5行x4列に戻す。待ち時間はconfで大きく設定して電荷の減衰を待つ。
+    // col2row では 列が駆動側、行が読み取り側。プルダウンは行側に付ける。
     row-gpios
-        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // Row0
-        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // Row1
-        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // Row2
-        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // Row3
-        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // Row4
+        = <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row0(読み取り)
+        , <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row1
+        , <&xiao_d 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row2
+        , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row3
+        , <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row4
         ;
 
     col-gpios
-        = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col0
-        , <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col1
-        , <&xiao_d 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col2
-        , <&xiao_d 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col3
+        = <&xiao_d 5 GPIO_ACTIVE_HIGH> // Col0(駆動)
+        , <&xiao_d 6 GPIO_ACTIVE_HIGH> // Col1
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // Col2
+        , <&xiao_d 8 GPIO_ACTIVE_HIGH> // Col3
         ;
 };
 
