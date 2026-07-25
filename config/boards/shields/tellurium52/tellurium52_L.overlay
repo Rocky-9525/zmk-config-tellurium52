@@ -1,13 +1,18 @@
 #include "tellurium52.dtsi"
 
 &kscan0 {
-    // 【段階テスト3】2本=正常、6本=幽霊。行を1本だけ足した3本で最小再現を探る。
-    // 期待(正常なら): 押すと "Sending event at 0,2" だけが出る。
-    // "1,2" も出たら、行1本足すだけで再現する = 最小再現条件が判明。
+    // 【ログ不要テスト】6本構成に戻す。幽霊は (0,5)(1,5)(2,5)(3,5)(4,5) に出る。
+    // これらは keymap の position 0〜4 = A(変更済) Q W E R に対応するので、
+    // メモ帳に打たれた文字で幽霊の有無が判定できる。
+    //   "a" だけ    -> 正常
+    //   "aqwer"     -> 幽霊4つ
     gpios
         = <&xiao_d 0 GPIO_ACTIVE_HIGH> // 0番: Row0
         , <&xiao_d 1 GPIO_ACTIVE_HIGH> // 1番: Row1
-        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 2番: Col2
+        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // 2番: Row2
+        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // 3番: Row3
+        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // 4番: Row4
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 5番: Col2
         ;
 };
 
