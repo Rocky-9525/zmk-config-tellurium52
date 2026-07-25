@@ -37,11 +37,9 @@
     diode-direction = "row2col";
     /delete-property/ gpios;
 
-    // 【本命】チャタリング除去を強めに設定する。
-    // 押した瞬間の数ミリ秒だけ暴れる幽霊イベントをフィルタする。
-    // 長押し中は正しく1キーだけなので、過渡的なノイズさえ除ければ正常になる。
-    debounce-press-ms = <50>;
-    debounce-release-ms = <50>;
+    // 最小構成テストでは素の挙動を見たいので、チャタリング除去は控えめにする
+    debounce-press-ms = <8>;
+    debounce-release-ms = <8>;
 
     // 通常の5行x4列に戻す。待ち時間はconfで大きく設定して電荷の減衰を待つ。
     row-gpios
@@ -52,13 +50,11 @@
         , <&xiao_d 4 GPIO_ACTIVE_HIGH> // Row4
         ;
 
-    // 【切り分け】Col3 を外す。Col3 にはロータリーエンコーダの押し込みスイッチと
-    // 金属フレーム(SW27.MP)が繋がっており、唯一切り離せていない部品だった。
-    // ここを走査から外して、エンコーダの影響を断つ。
     col-gpios
         = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col0(読み取り)
         , <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col1
         , <&xiao_d 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col2
+        , <&xiao_d 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col3
         ;
 };
 
