@@ -24,11 +24,11 @@
             // マトリクス検証のため一時的にコメントアウト(エンコーダー無効化に合わせて)
             // sensor-bindings = <&scroll_horizontal &scroll_vertical>;
             bindings = <
-                /* 左手 26キー ※検証中: 1番目はESCだと文字が出ないため一時的にAにしている */
-                &kp A &kp Q &kp W &kp E &kp R &kp T
-                &kp TAB &kp A &kp S &kp D &kp F &kp G
-                &kp LSHFT &kp Z &kp X &kp C &kp V &kp B &kp SPACE
-                &kp LCTRL &kp LGUI &kp LALT &kp SPACE &mo 1 &kp ENTER &kp DEL
+                /* 【座標地図】検証中: 各マスに固有の文字。出た文字=座標が分かる */
+                &kp A &kp B &kp C &kp D &kp E &kp F
+                &kp G &kp H &kp I &kp J &kp K &kp L
+                &kp M &kp N &kp O &kp P &kp Q &kp R &kp S
+                &kp T &none &none &none &none &none &none
                 /* 右手 26キー */
                 &kp I &kp O &kp P &kp SEMI &kp Y &kp U
                 &kp K &kp L &kp AT &kp COLON &kp H &kp J
