@@ -7,8 +7,9 @@
         , <&xiao_d 2 GPIO_ACTIVE_HIGH> // Row2
         , <&xiao_d 3 GPIO_ACTIVE_HIGH> // Row3
         , <&xiao_d 4 GPIO_ACTIVE_HIGH> // Row4
-        , <&xiao_d 5 GPIO_ACTIVE_HIGH> // Col0
-        , <&xiao_d 6 GPIO_ACTIVE_HIGH> // Col1
+        // 【切り分け実験】5番目と6番目を入れ替え。幽霊イベントが物理ピンに付いてくるか確認する
+        , <&xiao_d 6 GPIO_ACTIVE_HIGH> // ★入替: 本来Col0の位置に xiao_d6
+        , <&xiao_d 5 GPIO_ACTIVE_HIGH> // ★入替: 本来Col1の位置に xiao_d5
         , <&xiao_d 7 GPIO_ACTIVE_HIGH> // Col2
         , <&xiao_d 8 GPIO_ACTIVE_HIGH> // Col3
         ;
