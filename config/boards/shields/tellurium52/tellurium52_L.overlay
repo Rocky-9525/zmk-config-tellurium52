@@ -4,7 +4,7 @@
 // position 0 = RC(0,2) -> A、position 1 = RC(1,2) -> Q。他は元のまま。
 &default_transform {
     map = <
-        RC(0,1) RC(1,0) RC(2,5) RC(3,5) RC(4,5) RC(0,6)
+        RC(0,2) RC(1,2) RC(2,5) RC(3,5) RC(4,5) RC(0,6)
         RC(1,6) RC(2,6) RC(3,6) RC(4,6) RC(0,7) RC(1,7)
         RC(2,7) RC(5,0) RC(5,1) RC(5,2) RC(5,3) RC(5,4)
         RC(6,0) RC(6,1) RC(6,2) RC(6,3) RC(6,4) RC(7,0)
@@ -20,14 +20,28 @@
     >;
 };
 
+// 【標準マトリクスドライバでの検証】
+// チャーリープレックスをやめて、実績豊富な kscan-gpio-matrix を使う。
+// 順方向スイッチ(Row->Col)だけを対象にした 5行x4列 の普通のマトリクス。
+// SW11 は Row0 x Col2 なので、押すと RC(0,2) -> position0 -> "a" が1文字だけ出るはず。
 &kscan0 {
-    // 【Row1-Col2の常時導通テスト】d1とd7だけ。何も押さずに観察する。
-    // position0=RC(0,1)->A(d1駆動→d7が高)、position1=RC(1,0)->Q(d7駆動→d1が高)
-    //   何も押さないのに文字が出る -> Row1とCol2が常時繋がっている(SW12ソケット短絡など)
-    //   何も出ない                 -> その経路は正常
-    gpios
-        = <&xiao_d 1 GPIO_ACTIVE_HIGH> // 0番: Row1
-        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 1番: Col2
+    compatible = "zmk,kscan-gpio-matrix";
+    diode-direction = "row2col";
+    /delete-property/ gpios;
+
+    row-gpios
+        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // Row0
+        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // Row1
+        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // Row2
+        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // Row3
+        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // Row4
+        ;
+
+    col-gpios
+        = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col0
+        , <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col1
+        , <&xiao_d 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col2
+        , <&xiao_d 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Col3
         ;
 };
 
