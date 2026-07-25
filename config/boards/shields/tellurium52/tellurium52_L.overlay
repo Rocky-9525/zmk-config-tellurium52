@@ -1,70 +1,29 @@
 #include "tellurium52.dtsi"
 
-// 【検証用】3本テストのイベント座標を見える位置に割り当てる。
-// position 0 = RC(0,2) -> A、position 1 = RC(1,2) -> Q。他は元のまま。
-&default_transform {
-    map = <
-        /* 【座標地図】5行x4列の全マスに A〜T を割り当てる
-              Col0 Col1 Col2 Col3
-         Row0   A    B    C    D
-         Row1   E    F    G    H
-         Row2   I    J    K    L
-         Row3   M    N    O    P
-         Row4   Q    R    S    T                                   */
-        RC(0,0) RC(0,1) RC(0,2) RC(0,3) RC(1,0) RC(1,1)
-        RC(1,2) RC(1,3) RC(2,0) RC(2,1) RC(2,2) RC(2,3)
-        RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(4,0) RC(4,1)
-        RC(4,2) RC(4,3) RC(6,0) RC(6,1) RC(6,2) RC(6,3)
-        RC(6,4) RC(7,2)
-
-        RC(0,14) RC(1,14) RC(2,14) RC(3,14) RC(4,14) RC(0,15)
-        RC(1,15) RC(2,15) RC(3,15) RC(4,15) RC(0,16) RC(1,16)
-        RC(2,16) RC(5,9) RC(5,10) RC(5,11) RC(5,12) RC(5,13)
-        RC(6,9) RC(6,10) RC(6,11) RC(6,12) RC(6,13) RC(7,9)
-        RC(7,10) RC(7,11)
-
-        RC(0,8) RC(0,17)
-    >;
-};
-
-// 【標準マトリクスドライバでの検証】
-// チャーリープレックスをやめて、実績豊富な kscan-gpio-matrix を使う。
-// 順方向スイッチ(Row->Col)だけを対象にした 5行x4列 の普通のマトリクス。
-// SW11 は Row0 x Col2 なので、押すと RC(0,2) -> position0 -> "a" が1文字だけ出るはず。
+// 【本番構成】チャーリープレックス方式に復帰。
+// 26キーを識別するにはこの方式が必要(マトリクス方式では20マスしか無く、
+// SW14〜26 が SW1〜13 と同じ座標になってしまうため)。
+// 幽霊イベントの原因は「金属ピンセットを手で握って測っていたこと」だったので、
+// この方式自体には問題が無かった可能性が高い。
 &kscan0 {
-    compatible = "zmk,kscan-gpio-matrix";
-    // col2row では無反応だったため、向きは Row -> Col が正しい。
-    diode-direction = "row2col";
-    /delete-property/ gpios;
-
-    // 最小構成テストでは素の挙動を見たいので、チャタリング除去は控えめにする
-    debounce-press-ms = <8>;
-    debounce-release-ms = <8>;
-
-    // 通常の5行x4列に戻す。待ち時間はconfで大きく設定して電荷の減衰を待つ。
-    // 【重要】xiao_d の中継定義を経由するとプルダウン指定が失われている疑いがあるため、
-    // GPIOコントローラ(gpio0/gpio1)を直接指定する。
-    // XIAO nRF52840 のピン対応:
+    // xiao_d の中継を経由せず、GPIOコントローラを直接指定してプルダウンを確実にする。
     //   D0=P0.02 D1=P0.03 D2=P0.28 D3=P0.29 D4=P0.04
     //   D5=P0.05 D6=P1.11 D7=P1.12 D8=P1.13
-    row-gpios
+    gpios
         = <&gpio0  2 GPIO_ACTIVE_HIGH> // D0 = Row0
         , <&gpio0  3 GPIO_ACTIVE_HIGH> // D1 = Row1
         , <&gpio0 28 GPIO_ACTIVE_HIGH> // D2 = Row2
         , <&gpio0 29 GPIO_ACTIVE_HIGH> // D3 = Row3
         , <&gpio0  4 GPIO_ACTIVE_HIGH> // D4 = Row4
-        ;
-
-    col-gpios
-        = <&gpio0  5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // D5 = Col0
-        , <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // D6 = Col1
-        , <&gpio1 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // D7 = Col2
-        , <&gpio1 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // D8 = Col3
+        , <&gpio0  5 GPIO_ACTIVE_HIGH> // D5 = Col0
+        , <&gpio1 11 GPIO_ACTIVE_HIGH> // D6 = Col1
+        , <&gpio1 12 GPIO_ACTIVE_HIGH> // D7 = Col2
+        , <&gpio1 13 GPIO_ACTIVE_HIGH> // D8 = Col3
         ;
 };
 
 / {
-    // マトリクス検証のためエンコーダーを一時的に無効化(後で復活させます)
+    // マトリクス検証のためエンコーダーは一時的に無効のまま(動作確認後に復活させる)
     // left_encoder: left_encoder {
     //     compatible = "alps,ec11";
     //     a-gpios = <&xiao_d 9 GPIO_ACTIVE_HIGH>;
