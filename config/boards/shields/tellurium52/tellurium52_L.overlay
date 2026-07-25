@@ -1,16 +1,14 @@
 #include "tellurium52.dtsi"
 
 &kscan0 {
+    // 【最小構成テスト】ピンを2本だけにする。
+    // 挿している1個のスイッチが使う xiao_d0(Row0) と xiao_d7(Col2) のみ。
+    // 2本しかなければ幽霊が生まれる余地は構造的に無い。
+    // 期待: 押すと "Sending event at 0,1"(または1,0)が1回だけ出る。
+    // ※transformとは合わないので "Not found in transform" 警告が出るのは正常。生ログで判定する。
     gpios
-        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // Row0
-        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // Row1
-        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // Row2
-        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // Row3
-        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // Row4
-        , <&xiao_d 5 GPIO_ACTIVE_HIGH> // Col0
-        , <&xiao_d 6 GPIO_ACTIVE_HIGH> // Col1
-        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // Col2
-        , <&xiao_d 8 GPIO_ACTIVE_HIGH> // Col3
+        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // 0番: Row0
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // 1番: Col2
         ;
 };
 
