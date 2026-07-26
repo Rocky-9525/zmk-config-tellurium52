@@ -42,7 +42,7 @@
                 /* SW1〜SW6   */ &kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp N6
                 /* SW7〜SW12  */ &kp N7 &kp N8 &kp N9 &kp N0 &kp MINUS &kp EQUAL
                 /* SW13〜SW19 */ &kp LBKT &kp RBKT &kp BSLH &kp SEMI &kp SQT &kp COMMA &kp DOT
-                /* SW20〜SW26 */ &kp FSLH &kp GRAVE &kp TAB &kp SPACE &kp ENTER &kp BSPC &kp DEL
+                /* SW20〜SW26 */ &kp FSLH &kp GRAVE &kp TAB &kp SPACE &kp ENTER &kp BSPC &mo 1
                 /* ロータリーエンコーダー押し込み: 左=左クリック 右=右クリック */
                 &mkp LCLK &mkp RCLK
             >;
@@ -54,9 +54,13 @@
                 &none &none &none &none &none &none
                 &none &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &none &none &none
                 &none &none &none &none &none &none &none
-                /* 右手 26キー */
-                &none &none &none &none &none &none
-                &none &none &none &none &none &none
+                /* 右手 26キー : Bluetooth操作(親機は右手なのでここに置く)
+                   SW1〜5 = プロファイル0〜4の選択
+                   SW6    = 今のプロファイルの登録を消去(BT_CLR)
+                   SW7    = 全プロファイル消去(BT_CLR_ALL)
+                   SW8    = USB出力に切替 / SW9 = Bluetooth出力に切替 */
+                &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &bt BT_CLR
+                &bt BT_CLR_ALL &out OUT_USB &out OUT_BLE &none &none &none
                 &none &none &none &none &none &none &none
                 &none &none &none &none &none &none &none
                 /* ロータリーエンコーダー押し込み */
