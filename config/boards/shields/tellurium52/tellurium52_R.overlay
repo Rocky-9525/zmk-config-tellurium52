@@ -30,13 +30,16 @@
         compatible = "alps,ec11";
         a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
         b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        // 2 や 1 にすると全く反応しなくなったため、4 が正しい。
-        resolution = <4>;
+        // resolution は非推奨。現在は steps(1回転あたりの総パルス数)で指定する。
+        // 一般的なEC11: 20クリック x 4パルス = 80
+        steps = <80>;
         status = "okay";
     };
 
     sensors: sensors {
         compatible = "zmk,keymap-sensors";
         sensors = <&right_encoder>;
+        // 1回転あたり何回反応させるか。20クリックのエンコーダなので20 = 1クリック1回。
+        triggers-per-rotation = <20>;
     };
 };
