@@ -30,16 +30,19 @@
                左手を縦スクロールにしておく。 */
             sensor-bindings = <&scroll_vertical &scroll_horizontal>;
             bindings = <
-                /* 左手 26キー (SW1〜SW26の物理順) */
-                &kp ESC &kp Q &kp W &kp E &kp R &kp T
-                &kp TAB &kp A &kp S &kp D &kp F &kp G
-                &kp LSHFT &kp Z &kp X &kp C &kp V &kp B &kp SPACE
-                &kp LCTRL &kp LGUI &kp LALT &kp SPACE &mo 1 &kp ENTER &kp DEL
-                /* 右手 26キー */
-                &kp I &kp O &kp P &kp SEMI &kp Y &kp U
-                &kp K &kp L &kp AT &kp COLON &kp H &kp J
-                &kp COMMA &kp DOT &kp FSLH &kp BSLH &kp B &kp N &kp M
-                &kp ENTER &kp BSPC &kp DEL &kp ENTER &kp BSPC &kp DEL &kp ENTER
+                /* ================= 左手 26キー = アルファベット =================
+                   SW1〜SW26 の物理順。押した場所と出る文字が1対1で分かるようにした。 */
+                /* SW1〜SW6   */ &kp A &kp B &kp C &kp D &kp E &kp F
+                /* SW7〜SW12  */ &kp G &kp H &kp I &kp J &kp K &kp L
+                /* SW13〜SW19 */ &kp M &kp N &kp O &kp P &kp Q &kp R &kp S
+                /* SW20〜SW26 */ &kp T &kp U &kp V &kp W &kp X &kp Y &kp Z
+
+                /* ================= 右手 26キー = 数字と記号 =================
+                   SW1〜SW26 の物理順。 */
+                /* SW1〜SW6   */ &kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp N6
+                /* SW7〜SW12  */ &kp N7 &kp N8 &kp N9 &kp N0 &kp MINUS &kp EQUAL
+                /* SW13〜SW19 */ &kp LBKT &kp RBKT &kp BSLH &kp SEMI &kp SQT &kp COMMA &kp DOT
+                /* SW20〜SW26 */ &kp FSLH &kp GRAVE &kp TAB &kp SPACE &kp ENTER &kp BSPC &kp DEL
                 /* ロータリーエンコーダー押し込み: 左=左クリック 右=右クリック */
                 &mkp LCLK &mkp RCLK
             >;
