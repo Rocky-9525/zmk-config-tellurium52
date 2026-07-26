@@ -1,29 +1,35 @@
 #include "tellurium52.dtsi"
 
-&default_transform {
-    col-offset = <9>;
-};
+// 【右手 単独動作テスト用】
+// 左手で確定した設定に揃える:
+//   ・xiao_d の中継を使わず GPIO を直接指定
+//   ・待ち時間 500us(残留電荷による誤検出を防ぐ)
+// 単独テスト中は col-offset を外して、左手と同じ座標地図をそのまま使う。
+// (本番の分割構成に戻すときは col-offset = <9> を復活させること)
 
 &kscan0 {
+    // XIAO nRF52840 のピン対応:
+    //   D0=P0.02 D1=P0.03 D2=P0.28 D3=P0.29 D4=P0.04
+    //   D5=P0.05 D6=P1.11 D7=P1.12 D8=P1.13
     gpios
-        = <&xiao_d 0 GPIO_ACTIVE_HIGH> // Row0
-        , <&xiao_d 1 GPIO_ACTIVE_HIGH> // Row1
-        , <&xiao_d 2 GPIO_ACTIVE_HIGH> // Row2
-        , <&xiao_d 3 GPIO_ACTIVE_HIGH> // Row3
-        , <&xiao_d 4 GPIO_ACTIVE_HIGH> // Row4
-        , <&xiao_d 5 GPIO_ACTIVE_HIGH> // Col0
-        , <&xiao_d 6 GPIO_ACTIVE_HIGH> // Col1
-        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // Col2
-        , <&xiao_d 8 GPIO_ACTIVE_HIGH> // Col3
+        = <&gpio0  2 GPIO_ACTIVE_HIGH> // D0 = Row0
+        , <&gpio0  3 GPIO_ACTIVE_HIGH> // D1 = Row1
+        , <&gpio0 28 GPIO_ACTIVE_HIGH> // D2 = Row2
+        , <&gpio0 29 GPIO_ACTIVE_HIGH> // D3 = Row3
+        , <&gpio0  4 GPIO_ACTIVE_HIGH> // D4 = Row4
+        , <&gpio0  5 GPIO_ACTIVE_HIGH> // D5 = Col0
+        , <&gpio1 11 GPIO_ACTIVE_HIGH> // D6 = Col1
+        , <&gpio1 12 GPIO_ACTIVE_HIGH> // D7 = Col2
+        , <&gpio1 13 GPIO_ACTIVE_HIGH> // D8 = Col3
         ;
 };
 
 / {
-    // マトリクス検証のためエンコーダーを一時的に無効化(後で復活させます)
+    // エンコーダーは全キー確認後に有効化する
     // right_encoder: right_encoder {
     //     compatible = "alps,ec11";
-    //     a-gpios = <&xiao_d 9 GPIO_ACTIVE_HIGH>;
-    //     b-gpios = <&xiao_d 10 GPIO_ACTIVE_HIGH>;
+    //     a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+    //     b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
     //     resolution = <4>;
     //     status = "okay";
     // };
