@@ -21,7 +21,10 @@
     keymap {
         compatible = "zmk,keymap";
         default_layer {
-            sensor-bindings = <&scroll_horizontal &scroll_vertical>;
+            /* 1個目=左手エンコーダー、2個目=右手エンコーダー。
+               分割OFFで左手単独のときは1個目だけが使われるので、
+               左手を縦スクロールにしておく。 */
+            sensor-bindings = <&scroll_vertical &scroll_horizontal>;
             bindings = <
                 /* 左手 26キー (SW1〜SW26の物理順) */
                 &kp ESC &kp Q &kp W &kp E &kp R &kp T
