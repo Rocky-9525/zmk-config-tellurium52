@@ -38,7 +38,7 @@
     sensors: sensors {
         compatible = "zmk,keymap-sensors";
         sensors = <&left_encoder>;
-        // 1回転あたり何回反応させるか。20クリックのエンコーダなので20 = 1クリック1回。
-        triggers-per-rotation = <20>;
+        // 1回転あたりの反応回数。20=1クリック1回、40=1クリック2回(反応を速くしたいので40)。
+        triggers-per-rotation = <40>;
     };
 };
