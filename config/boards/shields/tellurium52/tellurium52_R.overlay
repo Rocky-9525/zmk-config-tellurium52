@@ -25,17 +25,17 @@
 };
 
 / {
-    // エンコーダーは全キー確認後に有効化する
-    // right_encoder: right_encoder {
-    //     compatible = "alps,ec11";
-    //     a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-    //     b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-    //     resolution = <4>;
-    //     status = "okay";
-    // };
+    // ロータリーエンコーダー(右手)。D9/D10 に A/B 相。 D9=P1.14, D10=P1.15
+    right_encoder: right_encoder {
+        compatible = "alps,ec11";
+        a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        resolution = <4>;
+        status = "okay";
+    };
 
-    // sensors: sensors {
-    //     compatible = "zmk,keymap-sensors";
-    //     sensors = <&right_encoder>;
-    // };
+    sensors: sensors {
+        compatible = "zmk,keymap-sensors";
+        sensors = <&right_encoder>;
+    };
 };
