@@ -61,7 +61,8 @@
                    SW7    = 全プロファイル消去(BT_CLR_ALL)
                    SW8    = USB出力に切替 / SW9 = Bluetooth出力に切替 */
                 &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &bt BT_CLR
-                &bt BT_CLR_ALL &out OUT_USB &out OUT_BLE &none &none &none
+                /* BT_CLR_ALL は幽霊イベントで誤爆すると全ペアリングが消えて危険なため外した */
+                &none &out OUT_USB &out OUT_BLE &none &none &none
                 &none &none &none &none &none &none &none
                 &none &none &none &none &none &none &none
                 /* ロータリーエンコーダー押し込み */
