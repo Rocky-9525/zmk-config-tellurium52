@@ -3,6 +3,8 @@ include:
     shield: settings_reset
   - board: xiao_ble//zmk
     shield: tellurium52_L
+  # 【一時的】BLE切断の原因調査のため studio-rpc-usb-uart を外している。
+  # このスニペットはUSBのシリアル通信を占有するため、ログが出力できない。
+  # 調査が終わったら snippet: studio-rpc-usb-uart を戻すこと。
   - board: xiao_ble//zmk
     shield: tellurium52_R
-    snippet: studio-rpc-usb-uart
