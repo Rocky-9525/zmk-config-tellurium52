@@ -30,9 +30,8 @@
         compatible = "alps,ec11";
         a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
         b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        // 1クリックで両方向が反応したため 4 -> 2 に変更。
-        // 左手のエンコーダは 4 で正常なので、右手は別型番(パルス数違い)と思われる。
-        resolution = <2>;
+        // 1クリックで両方向が反応する問題の切り分け。4 -> 2 では改善せず、1 を試す。
+        resolution = <1>;
         status = "okay";
     };
 
