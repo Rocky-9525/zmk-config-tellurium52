@@ -30,8 +30,8 @@
         compatible = "alps,ec11";
         a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
         b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        // 1クリックで両方向が反応する問題の切り分け。4 -> 2 では改善せず、1 を試す。
-        resolution = <1>;
+        // 2 や 1 にすると全く反応しなくなったため、4 が正しい。
+        resolution = <4>;
         status = "okay";
     };
 
