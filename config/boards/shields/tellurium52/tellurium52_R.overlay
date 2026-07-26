@@ -30,9 +30,9 @@
         compatible = "alps,ec11";
         a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
         b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        // resolution は非推奨。現在は steps(1回転あたりの総パルス数)で指定する。
-        // 一般的なEC11: 20クリック x 4パルス = 80
-        steps = <80>;
+        // 右手のエンコーダは左手と別型番らしく、80では1クリックで両方向に反応した。
+        // パルス数を実物に合わせるため 40(20クリック x 2パルス)を試す。
+        steps = <40>;
         status = "okay";
     };
 
