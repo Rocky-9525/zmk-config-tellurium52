@@ -4,18 +4,22 @@
 #include <dt-bindings/zmk/mouse.h>
 
 / {
-    // 左エンコーダー: 縦スクロール。回転方向を逆にしたい場合は bindings の2つを入れ替えてください
+    // 左エンコーダー: ページ送り。
+    // マウススクロール(&msc)は「押している間、時間で移動量を積算する」方式のため
+    // エンコーダーの一瞬の入力では動かなかった。1ノッチ=1キー入力の方式に変更。
+    // 回転方向を逆にしたい場合は bindings の2つを入れ替えてください
     scroll_vertical: scroll_vertical {
         compatible = "zmk,behavior-sensor-rotate";
         #sensor-binding-cells = <0>;
-        bindings = <&msc SCRL_DOWN>, <&msc SCRL_UP>;
+        bindings = <&kp PG_DN>, <&kp PG_UP>;
     };
 
-    // 右エンコーダー: 横スクロール。回転方向を逆にしたい場合は bindings の2つを入れ替えてください
+    // 右エンコーダー: 音量調整。
+    // 回転方向を逆にしたい場合は bindings の2つを入れ替えてください
     scroll_horizontal: scroll_horizontal {
         compatible = "zmk,behavior-sensor-rotate";
         #sensor-binding-cells = <0>;
-        bindings = <&msc SCRL_RIGHT>, <&msc SCRL_LEFT>;
+        bindings = <&kp C_VOL_UP>, <&kp C_VOL_DN>;
     };
 
     keymap {
