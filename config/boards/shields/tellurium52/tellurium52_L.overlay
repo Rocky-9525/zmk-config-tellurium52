@@ -23,17 +23,18 @@
 };
 
 / {
-    // マトリクス検証のためエンコーダーは一時的に無効のまま(動作確認後に復活させる)
-    // left_encoder: left_encoder {
-    //     compatible = "alps,ec11";
-    //     a-gpios = <&xiao_d 9 GPIO_ACTIVE_HIGH>;
-    //     b-gpios = <&xiao_d 10 GPIO_ACTIVE_HIGH>;
-    //     resolution = <4>;
-    //     status = "okay";
-    // };
+    // ロータリーエンコーダー(左手)。D9/D10 に A/B 相が繋がっている。
+    // kscan と同じく GPIO を直接指定する。 D9=P1.14, D10=P1.15
+    left_encoder: left_encoder {
+        compatible = "alps,ec11";
+        a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        resolution = <4>;
+        status = "okay";
+    };
 
-    // sensors: sensors {
-    //     compatible = "zmk,keymap-sensors";
-    //     sensors = <&left_encoder>;
-    // };
+    sensors: sensors {
+        compatible = "zmk,keymap-sensors";
+        sensors = <&left_encoder>;
+    };
 };
