@@ -1,9 +1,10 @@
 include:
   - board: xiao_ble//zmk
     shield: settings_reset
-  # ZMK Studio は親機側に入れる。親機を左手にしたのでスニペットも左手へ移動。
+  # 【一時的】親機(左手)が右手を探索しているか調べるため、
+  # USBシリアルを占有する studio-rpc-usb-uart を外してログを出せるようにしている。
+  # 調査が終わったら snippet: studio-rpc-usb-uart を戻すこと。
   - board: xiao_ble//zmk
     shield: tellurium52_L
-    snippet: studio-rpc-usb-uart
   - board: xiao_ble//zmk
     shield: tellurium52_R
