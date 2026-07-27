@@ -1,10 +1,9 @@
 include:
   - board: xiao_ble//zmk
     shield: settings_reset
+  # ZMK Studio は親機側に入れる。親機を左手にしたのでスニペットも左手へ移動。
   - board: xiao_ble//zmk
     shield: tellurium52_L
-  # 【一時的】BLE切断の原因調査のため studio-rpc-usb-uart を外している。
-  # このスニペットはUSBのシリアル通信を占有するため、ログが出力できない。
-  # 調査が終わったら snippet: studio-rpc-usb-uart を戻すこと。
+    snippet: studio-rpc-usb-uart
   - board: xiao_ble//zmk
     shield: tellurium52_R
