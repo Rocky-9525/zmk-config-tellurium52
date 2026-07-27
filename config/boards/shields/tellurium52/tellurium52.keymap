@@ -55,14 +55,11 @@
                 &none &none &none &none &none &none
                 &none &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &none &none &none
                 &none &none &none &none &none &none &none
-                /* 右手 26キー : Bluetooth操作(親機は右手なのでここに置く)
-                   SW1〜5 = プロファイル0〜4の選択
-                   SW6    = 今のプロファイルの登録を消去(BT_CLR)
-                   SW7    = 全プロファイル消去(BT_CLR_ALL)
-                   SW8    = USB出力に切替 / SW9 = Bluetooth出力に切替 */
-                &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &bt BT_CLR
-                /* BT_CLR_ALL は幽霊イベントで誤爆すると全ペアリングが消えて危険なため外した */
-                &none &out OUT_USB &out OUT_BLE &none &none &none
+                /* 右手 26キー : USB接続での切り分けのため Bluetooth操作キーは全て外した。
+                   幽霊イベントによる誤爆や余計な処理を完全に排除するのが目的。
+                   USB接続で安定動作が確認できたら、必要な分だけ戻す。 */
+                &none &none &none &none &none &none
+                &none &none &none &none &none &none
                 &none &none &none &none &none &none &none
                 &none &none &none &none &none &none &none
                 /* ロータリーエンコーダー押し込み */
