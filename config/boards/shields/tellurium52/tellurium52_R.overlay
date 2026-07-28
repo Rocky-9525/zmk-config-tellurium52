@@ -28,20 +28,18 @@
 };
 
 / {
-    // 【SMP Timeout の切り分け】エンコーダを一時的に無効化。
-    // この個体は信号が暴れており(val1 が +4/-4 を往復)、処理を占有して
-    // 鍵交換への応答を妨げている疑いがあるため。ペアリングが通ったら戻す。
-    // right_encoder: right_encoder {
-    //     compatible = "alps,ec11";
-    //     a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-    //     b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-    //     steps = <80>;
-    //     status = "okay";
-    // };
+    // ロータリーエンコーダー(右手)。D9=P1.14, D10=P1.15
+    right_encoder: right_encoder {
+        compatible = "alps,ec11";
+        a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        steps = <80>;
+        status = "okay";
+    };
 
-    // sensors: sensors {
-    //     compatible = "zmk,keymap-sensors";
-    //     sensors = <&right_encoder>;
-    //     triggers-per-rotation = <40>;
-    // };
+    sensors: sensors {
+        compatible = "zmk,keymap-sensors";
+        sensors = <&right_encoder>;
+        triggers-per-rotation = <40>;
+    };
 };

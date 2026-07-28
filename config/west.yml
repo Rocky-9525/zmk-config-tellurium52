@@ -5,7 +5,10 @@ manifest:
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: main
+      # 【重要】開発版(main)から安定版に固定。
+      # mainでは左右間のペアリングが SMP Timeout で失敗し続けたため。
+      # 実績のある配布設定(LisM / moNa2 v2)がいずれも安定版を指定している。
+      revision: v0.3-branch
       import: app/west.yml
   self:
     path: config
