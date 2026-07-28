@@ -4,9 +4,21 @@
 include:
   - board: seeeduino_xiao_ble
     shield: settings_reset
+
+  # --- 通常版(こちらを使う) ---
   # 【一時的】親機(左手)のログを見るため studio-rpc-usb-uart を外している。
   # USBシリアルを占有しログが出せなくなるため。調査後に戻すこと。
   - board: seeeduino_xiao_ble
     shield: tellurium52_L
   - board: seeeduino_xiao_ble
     shield: tellurium52_R
+
+  # --- ログ版(通常版でうまくいかない時だけ使う) ---
+  # v0.3 では CONFIG_ZMK_USB_LOGGING を .conf に書くとビルドが通らない。
+  # (CDC-ACM の devicetree ノードが無く Kconfig 依存を満たせないため)
+  # 公式の zmk-usb-logging スニペットが必要なノードごと追加してくれる。
+  - board: seeeduino_xiao_ble
+    shield: tellurium52_L
+    snippet: zmk-usb-logging
+    cmake-args: -DCONFIG_ZMK_LOG_LEVEL_DBG=y
+    artifact-name: tellurium52_L-LOG
