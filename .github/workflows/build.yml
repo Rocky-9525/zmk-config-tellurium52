@@ -2,4 +2,6 @@ name: Build
 on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    # west.yml で ZMK を v0.3-branch に固定したので、ビルド手順も同じ安定版に揃える。
+    # @main のままだと新しいボード名記法(xiao_ble//zmk)を要求してエラーになる。
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3.0
