@@ -22,3 +22,11 @@ include:
     snippet: zmk-usb-logging
     cmake-args: -DCONFIG_ZMK_LOG_LEVEL_DBG=y
     artifact-name: tellurium52_L-LOG
+
+  # 子機側のログ。親機のログは「相手が答えない」までしか分からないため、
+  # 答えない理由を子機自身に喋らせる。両方同時にログを取って突き合わせる。
+  - board: seeeduino_xiao_ble
+    shield: tellurium52_R
+    snippet: zmk-usb-logging
+    cmake-args: -DCONFIG_ZMK_LOG_LEVEL_DBG=y
+    artifact-name: tellurium52_R-LOG
