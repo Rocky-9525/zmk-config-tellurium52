@@ -17,16 +17,32 @@ include:
   # v0.3 では CONFIG_ZMK_USB_LOGGING を .conf に書くとビルドが通らない。
   # (CDC-ACM の devicetree ノードが無く Kconfig 依存を満たせないため)
   # 公式の zmk-usb-logging スニペットが必要なノードごと追加してくれる。
+  # 親機は ZMK のDBGを切る。スキャン結果のログが毎秒大量に出て、
+  # 肝心の接続・暗号化のメッセージが押し流されてしまうため。
+  # 代わりに SMP(鍵交換)だけDBGにする。数十行しか出ないので流れない。
   - board: seeeduino_xiao_ble
     shield: tellurium52_L
     snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_ZMK_LOG_LEVEL_DBG=y
+    cmake-args: -DCONFIG_ZMK_LOG_LEVEL_INF=y -DCONFIG_BT_SMP_LOG_LEVEL_DBG=y
     artifact-name: tellurium52_L-LOG
 
-  # 子機側のログ。親機のログは「相手が答えない」までしか分からないため、
-  # 答えない理由を子機自身に喋らせる。両方同時にログを取って突き合わせる。
+  # 子機はスキャンしないので洪水にならない。ZMKのDBGは残したまま SMP を追加。
   - board: seeeduino_xiao_ble
     shield: tellurium52_R
     snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_ZMK_LOG_LEVEL_DBG=y
+    cmake-args: -DCONFIG_ZMK_LOG_LEVEL_DBG=y -DCONFIG_BT_SMP_LOG_LEVEL_DBG=y
     artifact-name: tellurium52_R-LOG
+
+  # --- 修正案: 高速2Mモードと大きいパケットを無効化 ---
+  # 小さいパケット(接続・購読・電池通知)は全て通っているのに、
+  # 65バイトの公開鍵交換だけが左右とも届かずタイムアウトしている。
+  # 電波品質が大パケットを運びきれていない疑いがあるため、
+  # 最も確実な 1M PHY / 27バイト固定に落として切り分ける。
+  - board: seeeduino_xiao_ble
+    shield: tellurium52_L
+    cmake-args: -DCONFIG_BT_AUTO_PHY_UPDATE=n -DCONFIG_BT_AUTO_DATA_LEN_UPDATE=n
+    artifact-name: tellurium52_L-1M
+  - board: seeeduino_xiao_ble
+    shield: tellurium52_R
+    cmake-args: -DCONFIG_BT_AUTO_PHY_UPDATE=n -DCONFIG_BT_AUTO_DATA_LEN_UPDATE=n
+    artifact-name: tellurium52_R-1M
