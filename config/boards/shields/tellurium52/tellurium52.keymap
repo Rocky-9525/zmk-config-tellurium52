@@ -134,14 +134,20 @@
          * BT_CLR は「今選んでいるプロファイル」のペアリングだけを消す。
          * 全消しの BT_CLR_ALL は誤爆が怖いので置いていない。
          * &bootloader と &sys_reset は押した側の半身に効く。
+         *
+         * 【L3 + D = Studioのロック解除】
+         * ZMK Studio は既定でロックされており(ZMK_STUDIO_RPC が
+         * imply ZMK_STUDIO_LOCKING しているため)、解除しないと編集が
+         * 拒否される。切断するたび再ロックされるので、Studioで編集する
+         * 前に毎回この組み合わせを押す。
          * ================================================================= */
         sys_layer {
             display-name = "Sys";
             bindings = <
     /* 左1段  -- BT0 BT1 BT2 | BT3 BT4 */
                                       &trans   &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
-    /* 左2段  -- USB BLE 切替 | -- --  */
-                                      &trans   &out OUT_USB  &out OUT_BLE  &out OUT_TOG  &none         &none
+    /* 左2段  -- USB BLE Studio解除 | -- -- */
+                                      &trans   &out OUT_USB  &out OUT_BLE  &studio_unlock  &none       &none
     /* 左3段  -- ペア消去 -- -- | 書込 再起動 -- */
                                       &trans   &bt BT_CLR    &none         &none         &bootloader   &sys_reset  &trans
     /* 左4段  基本段のまま      */    &trans   &trans        &trans        &trans        &trans        &trans      &trans
