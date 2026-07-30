@@ -40,6 +40,7 @@
     sensors: sensors {
         compatible = "zmk,keymap-sensors";
         sensors = <&right_encoder>;
-        triggers-per-rotation = <40>;
+        // 左手と同じ。20 = 1ノッチ1回。40では1ノッチで2回反応してしまう。
+        triggers-per-rotation = <20>;
     };
 };
