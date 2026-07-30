@@ -6,10 +6,13 @@ include:
     shield: settings_reset
 
   # --- 通常版(こちらを使う) ---
-  # チャーリープレックスの空回りでCPUを90%食い潰し、ペアリングの鍵計算が
+  # チャーリープレックスの空回りでCPUを食い潰し、ペアリングの鍵計算が
   # 30秒のタイムアウトに間に合っていなかった問題の修正入り(.conf参照)。
+  # 親機には ZMK Studio の USBシリアル経路を足す。Bluetooth経路は既定で
+  # 有効なので、USBでもBluetoothでもStudioに繋がる。
   - board: seeeduino_xiao_ble
     shield: tellurium52_L
+    snippet: studio-rpc-usb-uart
   - board: seeeduino_xiao_ble
     shield: tellurium52_R
 
@@ -18,6 +21,7 @@ include:
   # 電気的なタイミングは以前とまったく同じなので幽霊キーは出ない。
   - board: seeeduino_xiao_ble
     shield: tellurium52_L
+    snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_ZMK_KSCAN_CHARLIEPLEX_WAIT_BEFORE_INPUTS=500 -DCONFIG_ZMK_KSCAN_CHARLIEPLEX_WAIT_BETWEEN_OUTPUTS=500
     artifact-name: tellurium52_L-500
   - board: seeeduino_xiao_ble

@@ -4,11 +4,37 @@
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/mouse.h>
 
+/*
+ * ============================ 物理配置 ============================
+ * 設計図(keyboard-layout.jpg)どおり。4段構成で、内側の列は半キー分下にずれる。
+ *
+ *  ESC  Q  W  E  R  T                          Y  U  I  O  P  ;
+ *  Tab  A  S  D  F  G                          H  J  K  L  @  :
+ *  Shft Z  X  C  V  B  -                  B    N  M  ,  .  /  \
+ *  Ctrl Win Alt 無変換 Spc L1 L2      Ent BS Del  RSft 半/全 変換 L3
+ *
+ *                     [左エンコーダ] [右エンコーダ]
+ *
+ * 【重要】bindings の並び順は見た目の左右の並びとは違う。
+ * tellurium52.dtsi の keys リストの順、つまり各段で
+ *   左手 = 外側4キー(x=0〜300) → 内側(x=400〜600)
+ *   右手 = 外側4キー(x=1100〜1400) → 内側(x=800〜1000)
+ * の順に書く。右手は内側クラスタが後ろに来る点に注意。
+ * 各行のコメントに見た目の並びを書いてあるので照合できる。
+ *
+ * ============================ JIS配列 ============================
+ * OS側が日本語キーボード設定であることが前提(設計図に無変換・@・:があるため)。
+ * JISは物理位置とHIDコードの対応がUSとずれるので以下を使う:
+ *   @ → LBKT      : → SQT       \_(ろ) → INT_RO
+ *   ^ → EQUAL     ¥ → INT_YEN   [ → RBKT      ] → BSLH
+ *   半角/全角 → GRAVE    無変換 → INT_MUHENKAN    変換 → INT_HENKAN
+ */
+
 / {
     // 左エンコーダー: ページ送り。
     // マウススクロール(&msc)は「押している間、時間で移動量を積算する」方式のため
-    // エンコーダーの一瞬の入力では動かなかった。1ノッチ=1キー入力の方式に変更。
-    // 回転方向を逆にしたい場合は bindings の2つを入れ替えてください
+    // エンコーダーの一瞬の入力では動かなかった。1ノッチ=1キー入力の方式にしている。
+    // 回転方向を逆にしたい場合は bindings の2つを入れ替える。
     scroll_vertical: scroll_vertical {
         compatible = "zmk,behavior-sensor-rotate";
         #sensor-binding-cells = <0>;
@@ -16,7 +42,7 @@
     };
 
     // 右エンコーダー: 音量調整。
-    // 回転方向を逆にしたい場合は bindings の2つを入れ替えてください
+    // 回転方向を逆にしたい場合は bindings の2つを入れ替える。
     scroll_horizontal: scroll_horizontal {
         compatible = "zmk,behavior-sensor-rotate";
         #sensor-binding-cells = <0>;
@@ -25,45 +51,108 @@
 
     keymap {
         compatible = "zmk,keymap";
-        default_layer {
-            /* 1個目=左手エンコーダー、2個目=右手エンコーダー。
-               分割OFFで左手単独のときは1個目だけが使われるので、
-               左手を縦スクロールにしておく。 */
-            sensor-bindings = <&scroll_vertical &scroll_horizontal>;
-            bindings = <
-                /* ================= 左手 26キー = アルファベット =================
-                   SW1〜SW26 の物理順。押した場所と出る文字が1対1で分かるようにした。 */
-                /* SW1〜SW6   */ &kp A &kp B &kp C &kp D &kp E &kp F
-                /* SW7〜SW12  */ &kp G &kp H &kp I &kp J &kp K &kp L
-                /* SW13〜SW19 */ &kp M &kp N &kp O &kp P &kp Q &kp R &kp S
-                /* SW20〜SW26 */ &kp T &kp U &kp V &kp W &kp X &kp Y &kp Z
 
-                /* ================= 右手 26キー = 数字と記号 =================
-                   SW1〜SW26 の物理順。 */
-                /* SW1〜SW6   */ &kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp N6
-                /* SW7〜SW12  */ &kp N7 &kp N8 &kp N9 &kp N0 &kp MINUS &kp EQUAL
-                /* SW13〜SW19 */ &kp LBKT &kp RBKT &kp BSLH &kp SEMI &kp SQT &kp COMMA &kp DOT
-                /* SW20〜SW26 */ &kp FSLH &kp GRAVE &kp TAB &kp SPACE &kp ENTER &kp BSPC &mo 1
-                /* ロータリーエンコーダー押し込み: 左=左クリック 右=右クリック */
-                &mkp LCLK &mkp RCLK
+        /* =================================================================
+         * レイヤー0: 基本 (設計図どおり)
+         * ================================================================= */
+        base_layer {
+            display-name = "Base";
+
+            /* 1個目=左手エンコーダー、2個目=右手エンコーダー */
+            sensor-bindings = <&scroll_vertical &scroll_horizontal>;
+
+            bindings = <
+    /* 左1段  ESC Q W E | R T   */  &kp ESC    &kp Q      &kp W      &kp E             &kp R       &kp T
+    /* 左2段  Tab A S D | F G   */  &kp TAB    &kp A      &kp S      &kp D             &kp F       &kp G
+    /* 左3段  Sft Z X C | V B - */  &kp LSHFT  &kp Z      &kp X      &kp C             &kp V       &kp B      &kp MINUS
+    /* 左4段  Ctl Win Alt 無変換 | Spc L1 L2 */
+                                    &kp LCTRL  &kp LGUI   &kp LALT   &kp INT_MUHENKAN  &kp SPACE   &mo 1      &mo 2
+
+    /* 右1段  外:I O P ;  内:Y U   */  &kp I      &kp O      &kp P           &kp SEMI    &kp Y      &kp U
+    /* 右2段  外:K L @ :  内:H J   */  &kp K      &kp L      &kp LBKT        &kp SQT     &kp H      &kp J
+    /* 右3段  外:, . / \  内:B N M */  &kp COMMA  &kp DOT    &kp FSLH        &kp INT_RO  &kp B      &kp N      &kp M
+    /* 右4段  外:RSft 半/全 変換 L3   内:Ent BS Del */
+                                       &kp RSHFT  &kp GRAVE  &kp INT_HENKAN  &mo 3       &kp RET    &kp BSPC   &kp DEL
+
+    /* エンコーダー押し込み: 左=左クリック 右=右クリック */
+                                       &mkp LCLK  &mkp RCLK
             >;
         };
-        layer_1 {
+
+        /* =================================================================
+         * レイヤー1: 数字・ファンクション (左親指 L1 を押しながら)
+         * 数字はQWERTYの数字段と同じ指の位置に置いた:
+         *   1=Q 2=W 3=E 4=R 5=T / 6=Y 7=U 8=I 9=O 0=P -=;
+         * 基本段に無いJIS記号( ^ ¥ [ ] )もここに入れてある。
+         * ================================================================= */
+        num_layer {
+            display-name = "Num";
             bindings = <
-                /* 左手 26キー */
-                &none &none &none &none &none &none
-                &none &none &none &none &none &none
-                &none &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &none &none &none
-                &none &none &none &none &none &none &none
-                /* 右手 26キー : USB接続での切り分けのため Bluetooth操作キーは全て外した。
-                   幽霊イベントによる誤爆や余計な処理を完全に排除するのが目的。
-                   USB接続で安定動作が確認できたら、必要な分だけ戻す。 */
-                &none &none &none &none &none &none
-                &none &none &none &none &none &none
-                &none &none &none &none &none &none &none
-                &none &none &none &none &none &none &none
-                /* ロータリーエンコーダー押し込み */
-                &none &none
+    /* 左1段  -- 1 2 3 | 4 5      */  &trans     &kp N1     &kp N2     &kp N3       &kp N4     &kp N5
+    /* 左2段  -- F1 F2 F3 | F4 F5 */  &trans     &kp F1     &kp F2     &kp F3       &kp F4     &kp F5
+    /* 左3段  -- F12 ^ ¥ | [ ] -- */  &trans     &kp F12    &kp EQUAL  &kp INT_YEN  &kp RBKT   &kp BSLH   &trans
+    /* 左4段  基本段のまま        */  &trans     &trans     &trans     &trans       &trans     &trans     &trans
+
+    /* 右1段  外:8 9 0 -      内:6 7   */  &kp N8   &kp N9   &kp N0   &kp MINUS  &kp N6   &kp N7
+    /* 右2段  外:F8 F9 F10 F11 内:F6 F7 */  &kp F8   &kp F9   &kp F10  &kp F11    &kp F6   &kp F7
+    /* 右3段  基本段のまま              */  &trans   &trans   &trans   &trans     &trans   &trans   &trans
+    /* 右4段  基本段のまま              */  &trans   &trans   &trans   &trans     &trans   &trans   &trans
+
+                                            &trans   &trans
+            >;
+        };
+
+        /* =================================================================
+         * レイヤー2: 矢印・編集 (左親指 L2 を押しながら)
+         * 矢印は H J K L の位置に ← ↓ ↑ → (vim風)。
+         * 左手には Ctrl+Z/X/C/V などを同じ文字の位置に置いてある。
+         * ================================================================= */
+        nav_layer {
+            display-name = "Nav";
+            bindings = <
+    /* 左1段  -- -- -- -- | -- -- */  &trans     &none      &none      &none      &none      &none
+    /* 左2段  -- 全選択 保存 -- | 検索 -- */
+                                      &trans     &kp LC(A)  &kp LC(S)  &none      &kp LC(F)  &none
+    /* 左3段  -- 戻す 切取 コピー | 貼付 やり直し -- */
+                                      &trans     &kp LC(Z)  &kp LC(X)  &kp LC(C)  &kp LC(V)  &kp LC(Y)  &trans
+    /* 左4段  基本段のまま        */  &trans     &trans     &trans     &trans     &trans     &trans     &trans
+
+    /* 右1段  外:-- -- -- --      内:PgUp PgDn */
+                                      &none      &none      &none      &none      &kp PG_UP  &kp PG_DN
+    /* 右2段  外:↑ → Home End   内:← ↓    */
+                                      &kp UP     &kp RIGHT  &kp HOME   &kp END    &kp LEFT   &kp DOWN
+    /* 右3段  基本段のまま        */  &trans     &trans     &trans     &trans     &trans     &trans     &trans
+    /* 右4段  基本段のまま        */  &trans     &trans     &trans     &trans     &trans     &trans     &trans
+
+                                      &trans     &trans
+            >;
+        };
+
+        /* =================================================================
+         * レイヤー3: システム (右端の L3 を押しながら)
+         * Bluetoothの切替、出力先の切替、書き込みモードへの移行。
+         * BT_CLR は「今選んでいるプロファイル」のペアリングだけを消す。
+         * 全消しの BT_CLR_ALL は誤爆が怖いので置いていない。
+         * &bootloader と &sys_reset は押した側の半身に効く。
+         * ================================================================= */
+        sys_layer {
+            display-name = "Sys";
+            bindings = <
+    /* 左1段  -- BT0 BT1 BT2 | BT3 BT4 */
+                                      &trans   &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
+    /* 左2段  -- USB BLE 切替 | -- --  */
+                                      &trans   &out OUT_USB  &out OUT_BLE  &out OUT_TOG  &none         &none
+    /* 左3段  -- ペア消去 -- -- | 書込 再起動 -- */
+                                      &trans   &bt BT_CLR    &none         &none         &bootloader   &sys_reset  &trans
+    /* 左4段  基本段のまま      */    &trans   &trans        &trans        &trans        &trans        &trans      &trans
+
+    /* 右1段  すべて無効        */    &none    &none    &none        &none        &none    &none
+    /* 右2段  すべて無効        */    &none    &none    &none        &none        &none    &none
+    /* 右3段  外:-- -- 書込 再起動   内:-- -- -- */
+                                      &none    &none    &bootloader  &sys_reset   &none    &none    &none
+    /* 右4段  基本段のまま      */    &trans   &trans   &trans       &trans       &trans   &trans   &trans
+
+                                      &trans   &trans
             >;
         };
     };
