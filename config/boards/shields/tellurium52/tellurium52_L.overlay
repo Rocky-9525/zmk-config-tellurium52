@@ -22,25 +22,10 @@
         ;
 };
 
-/ {
-    // ロータリーエンコーダー(左手)。D9/D10 に A/B 相が繋がっている。
-    // kscan と同じく GPIO を直接指定する。 D9=P1.14, D10=P1.15
-    left_encoder: left_encoder {
-        compatible = "alps,ec11";
-        a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        // resolution は非推奨。現在は steps(1回転あたりの総パルス数)で指定する。
-        // 一般的なEC11: 20クリック x 4パルス = 80
-        steps = <80>;
-        status = "okay";
-    };
-
-    sensors: sensors {
-        compatible = "zmk,keymap-sensors";
-        sensors = <&left_encoder>;
-        // 1回転あたりの反応回数。steps=80 は4パルス/ノッチなので20ノッチ/回転。
-        // 20 = 1ノッチ1回、40 = 1ノッチ2回。
-        // 40だと「つまみを1つ回すと2回反応する」ので20に戻した。
-        triggers-per-rotation = <20>;
-    };
+// エンコーダーの定義と並び順は tellurium52.dtsi に集約してある。
+// (左右で番号を一致させないと、子機のエンコーダーが親機の0番として
+//  扱われてしまうため。詳しくは dtsi のコメント参照)
+// ここでは自分側だけを有効にする。
+&left_encoder {
+    status = "okay";
 };

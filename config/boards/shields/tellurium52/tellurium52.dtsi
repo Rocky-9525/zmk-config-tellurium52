@@ -1,5 +1,52 @@
 #include <dt-bindings/zmk/matrix_transform.h>
 #include <physical_layouts.dtsi>
+#include <zephyr/dt-bindings/gpio/gpio.h>
+
+/*
+ * ==================== ロータリーエンコーダー ====================
+ * 【重要】左右のエンコーダーは必ずこの共通ファイルで「両方」定義し、
+ * sensors にも両方並べること。使う側だけを overlay で okay にする。
+ *
+ * 理由: 分割キーボードでは子機が自分のローカルなセンサー番号をそのまま
+ * 親機へ送り、親機は変換せずに使う(central.c: .sensor_index = そのまま)。
+ * 子機側で sensors = <&right_encoder> とだけ書くと右エンコーダが0番になり、
+ * 左エンコーダと同じ keymap の sensor-bindings[0] を引いてしまう。
+ * 実際「左も右も縦スクロールになる」症状が出た。
+ * 両方を同じ順で並べれば 左=0番 / 右=1番 が左右のビルドで一致する。
+ *
+ * 無効側は DEVICE_DT_GET_OR_NULL で NULL になり、初期化時に
+ * 「No local device for N」とログを出してスキップされるだけなので安全。
+ *
+ * D9=P1.14, D10=P1.15。kscan と同じく GPIO を直接指定する。
+ */
+/ {
+    left_encoder: left_encoder {
+        compatible = "alps,ec11";
+        a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        // resolution は非推奨。現在は steps(1回転あたりの総パルス数)で指定する。
+        // 一般的なEC11: 20クリック x 4パルス = 80
+        steps = <80>;
+        status = "disabled";
+    };
+
+    right_encoder: right_encoder {
+        compatible = "alps,ec11";
+        a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        steps = <80>;
+        status = "disabled";
+    };
+
+    sensors: sensors {
+        compatible = "zmk,keymap-sensors";
+        // 並び順がそのまま keymap の sensor-bindings の順になる。
+        sensors = <&left_encoder &right_encoder>;
+        // 1回転あたりの反応回数。steps=80 は4パルス/ノッチなので20ノッチ/回転。
+        // 20 = 1ノッチ1回、40 = 1ノッチ2回。
+        triggers-per-rotation = <20>;
+    };
+};
 
 / {
     chosen {

@@ -59,20 +59,23 @@
 #define ENC_RIGHT MOVE_X(ENC_SCRL)
 
 / {
-    // 左エンコーダー: 縦スクロール。左に回す=上 / 右に回す=下。
-    // bindings の1個目が時計回り(右回し)、2個目が反時計回り(左回し)。
+    // 左エンコーダー(sensors の0番): 縦スクロール。左に回す=上 / 右に回す=下。
+    // bindings の1個目/2個目がどちらの回転方向になるかは配線(A相B相の順)で
+    // 決まるため机上では判断できない。実機で逆だったので入れ替えてある。
     scroll_vertical: scroll_vertical {
         compatible = "zmk,behavior-sensor-rotate";
         #sensor-binding-cells = <0>;
-        bindings = <&msc ENC_DOWN>, <&msc ENC_UP>;
+        bindings = <&msc ENC_UP>, <&msc ENC_DOWN>;
         tap-ms = <25>;
     };
 
-    // 右エンコーダー: 横スクロール。左に回す=左 / 右に回す=右。
+    // 右エンコーダー(sensors の1番): 横スクロール。左に回す=左 / 右に回す=右。
+    // 左右で回転の向きは揃っている(症状報告時、両方が同じ向きに動いていた)
+    // ので、左と同じ並び順にしてある。
     scroll_horizontal: scroll_horizontal {
         compatible = "zmk,behavior-sensor-rotate";
         #sensor-binding-cells = <0>;
-        bindings = <&msc ENC_RIGHT>, <&msc ENC_LEFT>;
+        bindings = <&msc ENC_LEFT>, <&msc ENC_RIGHT>;
         tap-ms = <25>;
     };
 

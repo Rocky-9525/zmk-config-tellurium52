@@ -27,20 +27,10 @@
         ;
 };
 
-/ {
-    // ロータリーエンコーダー(右手)。D9=P1.14, D10=P1.15
-    right_encoder: right_encoder {
-        compatible = "alps,ec11";
-        a-gpios = <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        b-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        steps = <80>;
-        status = "okay";
-    };
-
-    sensors: sensors {
-        compatible = "zmk,keymap-sensors";
-        sensors = <&right_encoder>;
-        // 左手と同じ。20 = 1ノッチ1回。40では1ノッチで2回反応してしまう。
-        triggers-per-rotation = <20>;
-    };
+// エンコーダーの定義と並び順は tellurium52.dtsi に集約してある。
+// ここで sensors = <&right_encoder> と単独指定すると右エンコーダーが
+// 0番になり、親機側で左エンコーダーと同じ設定を引いてしまう
+// (「左も右も縦スクロール」になる)。自分側を有効にするだけにとどめる。
+&right_encoder {
+    status = "okay";
 };
