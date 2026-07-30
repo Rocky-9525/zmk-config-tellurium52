@@ -6,43 +6,36 @@ include:
     shield: settings_reset
 
   # --- 通常版(こちらを使う) ---
-  # 【一時的】親機(左手)のログを見るため studio-rpc-usb-uart を外している。
-  # USBシリアルを占有しログが出せなくなるため。調査後に戻すこと。
+  # チャーリープレックスの空回りでCPUを90%食い潰し、ペアリングの鍵計算が
+  # 30秒のタイムアウトに間に合っていなかった問題の修正入り(.conf参照)。
   - board: seeeduino_xiao_ble
     shield: tellurium52_L
   - board: seeeduino_xiao_ble
     shield: tellurium52_R
 
-  # --- ログ版(通常版でうまくいかない時だけ使う) ---
-  # v0.3 では CONFIG_ZMK_USB_LOGGING を .conf に書くとビルドが通らない。
-  # (CDC-ACM の devicetree ノードが無く Kconfig 依存を満たせないため)
-  # 公式の zmk-usb-logging スニペットが必要なノードごと追加してくれる。
-  # 親機は ZMK のDBGを切る。スキャン結果のログが毎秒大量に出て、
-  # 肝心の接続・暗号化のメッセージが押し流されてしまうため。
-  # 代わりに SMP(鍵交換)だけDBGにする。数十行しか出ないので流れない。
+  # --- 予備: 幽霊キーが再発した場合 ---
+  # 待ち時間を実績の500µsに戻し、ワークキューの優先度修正だけで戦う版。
+  # 電気的なタイミングは以前とまったく同じなので幽霊キーは出ない。
+  - board: seeeduino_xiao_ble
+    shield: tellurium52_L
+    cmake-args: -DCONFIG_ZMK_KSCAN_CHARLIEPLEX_WAIT_BEFORE_INPUTS=500 -DCONFIG_ZMK_KSCAN_CHARLIEPLEX_WAIT_BETWEEN_OUTPUTS=500
+    artifact-name: tellurium52_L-500
+  - board: seeeduino_xiao_ble
+    shield: tellurium52_R
+    cmake-args: -DCONFIG_ZMK_KSCAN_CHARLIEPLEX_WAIT_BEFORE_INPUTS=500 -DCONFIG_ZMK_KSCAN_CHARLIEPLEX_WAIT_BETWEEN_OUTPUTS=500
+    artifact-name: tellurium52_R-500
+
+  # --- ログ版(修正が効いたか数字で確かめる用) ---
+  # bt_smp_pkey_ready が何秒で出るかを見る。10秒前後なら修正成功。
+  # v0.3 では CONFIG_ZMK_USB_LOGGING を .conf に書くとビルドが通らないため
+  # 公式の zmk-usb-logging スニペットを使う(CDC-ACMのノードごと追加される)。
   - board: seeeduino_xiao_ble
     shield: tellurium52_L
     snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_ZMK_LOG_LEVEL_INF=y -DCONFIG_BT_SMP_LOG_LEVEL_DBG=y
+    cmake-args: -DCONFIG_BT_SMP_LOG_LEVEL_DBG=y
     artifact-name: tellurium52_L-LOG
-
-  # 子機はスキャンしないので洪水にならない。ZMKのDBGは残したまま SMP を追加。
   - board: seeeduino_xiao_ble
     shield: tellurium52_R
     snippet: zmk-usb-logging
-    cmake-args: -DCONFIG_ZMK_LOG_LEVEL_DBG=y -DCONFIG_BT_SMP_LOG_LEVEL_DBG=y
+    cmake-args: -DCONFIG_BT_SMP_LOG_LEVEL_DBG=y
     artifact-name: tellurium52_R-LOG
-
-  # --- 修正案: 高速2Mモードと大きいパケットを無効化 ---
-  # 小さいパケット(接続・購読・電池通知)は全て通っているのに、
-  # 65バイトの公開鍵交換だけが左右とも届かずタイムアウトしている。
-  # 電波品質が大パケットを運びきれていない疑いがあるため、
-  # 最も確実な 1M PHY / 27バイト固定に落として切り分ける。
-  - board: seeeduino_xiao_ble
-    shield: tellurium52_L
-    cmake-args: -DCONFIG_BT_AUTO_PHY_UPDATE=n -DCONFIG_BT_AUTO_DATA_LEN_UPDATE=n
-    artifact-name: tellurium52_L-1M
-  - board: seeeduino_xiao_ble
-    shield: tellurium52_R
-    cmake-args: -DCONFIG_BT_AUTO_PHY_UPDATE=n -DCONFIG_BT_AUTO_DATA_LEN_UPDATE=n
-    artifact-name: tellurium52_R-1M
