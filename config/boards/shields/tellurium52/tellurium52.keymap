@@ -30,23 +30,50 @@
  *   半角/全角 → GRAVE    無変換 → INT_MUHENKAN    変換 → INT_HENKAN
  */
 
+/*
+ * ==================== エンコーダーでマウスホイールを回す ====================
+ * 以前 &msc が効かなかった理由と、その対策。
+ *
+ * &msc は「押している間、trigger-period-ms(既定16ms)ごとに
+ *   移動量 = 速度 × 16 ÷ 1000
+ * を出す」方式で、離すと端数(remainder)も0に戻る。
+ * 一方 zmk,behavior-sensor-rotate は内部で
+ *   押す → tap-ms 待つ → 離す
+ * をしており、その tap-ms の既定値が 5ms しかない。
+ * 16ms周期に対して5msで離してしまうので、一度も発火せず0のままだった。
+ *
+ * 対策は2つ:
+ *   (1) tap-ms を 25 にして、16ms の1回目だけを確実に発火させる
+ *       (2回目は32msなので発火しない = 1ノッチちょうど1回)
+ *   (2) 速度を 63 にして 63×16÷1000 = 1.008 ≒ ホイール1目盛/回 にする
+ *       既定の SCRL_UP は速度10しかなく、1目盛出すのに約112ms必要だった。
+ *
+ * 調整方法:
+ *   スクロール量を増やす → ENC_SCRL を 126(2目盛) 189(3目盛) などに
+ *   全く動かない場合     → tap-ms を 40 に(発火2回=2目盛になる)
+ */
+#define ENC_SCRL  63
+#define ENC_UP    MOVE_Y(ENC_SCRL)
+#define ENC_DOWN  MOVE_Y(-ENC_SCRL)
+#define ENC_LEFT  MOVE_X(-ENC_SCRL)
+#define ENC_RIGHT MOVE_X(ENC_SCRL)
+
 / {
-    // 左エンコーダー: ページ送り。
-    // マウススクロール(&msc)は「押している間、時間で移動量を積算する」方式のため
-    // エンコーダーの一瞬の入力では動かなかった。1ノッチ=1キー入力の方式にしている。
-    // 回転方向を逆にしたい場合は bindings の2つを入れ替える。
+    // 左エンコーダー: 縦スクロール。左に回す=上 / 右に回す=下。
+    // bindings の1個目が時計回り(右回し)、2個目が反時計回り(左回し)。
     scroll_vertical: scroll_vertical {
         compatible = "zmk,behavior-sensor-rotate";
         #sensor-binding-cells = <0>;
-        bindings = <&kp PG_DN>, <&kp PG_UP>;
+        bindings = <&msc ENC_DOWN>, <&msc ENC_UP>;
+        tap-ms = <25>;
     };
 
-    // 右エンコーダー: 音量調整。
-    // 回転方向を逆にしたい場合は bindings の2つを入れ替える。
+    // 右エンコーダー: 横スクロール。左に回す=左 / 右に回す=右。
     scroll_horizontal: scroll_horizontal {
         compatible = "zmk,behavior-sensor-rotate";
         #sensor-binding-cells = <0>;
-        bindings = <&kp C_VOL_UP>, <&kp C_VOL_DN>;
+        bindings = <&msc ENC_RIGHT>, <&msc ENC_LEFT>;
+        tap-ms = <25>;
     };
 
     keymap {
