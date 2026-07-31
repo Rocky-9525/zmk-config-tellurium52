@@ -83,7 +83,13 @@
         compatible = "zmk,keymap";
 
         /* =================================================================
-         * レイヤー0: 基本 (設計図どおり)
+         * レイヤー0: 基本
+         * DYA Studio 上で利用者が調整した内容をそのまま反映してある。
+         *   ・L1 は MO(押している間)ではなく TO(切り替え)。左内側の V B の右。
+         *     戻るときは L1 側の同じ位置にある TO 0 を押す。
+         *   ・L2 は左親指の一番外側で MO(押している間だけ)。
+         *   ・Win は左下段からその左親指の隣へ移動。
+         *   ・右下段は Caps と - を配置。半角/全角と変換は置いていない。
          * ================================================================= */
         base_layer {
             display-name = "Base";
@@ -92,17 +98,17 @@
             sensor-bindings = <&scroll_vertical &scroll_horizontal>;
 
             bindings = <
-    /* 左1段  ESC Q W E | R T   */  &kp ESC    &kp Q      &kp W      &kp E             &kp R       &kp T
-    /* 左2段  Tab A S D | F G   */  &kp TAB    &kp A      &kp S      &kp D             &kp F       &kp G
-    /* 左3段  Sft Z X C | V B - */  &kp LSHFT  &kp Z      &kp X      &kp C             &kp V       &kp B      &kp MINUS
-    /* 左4段  Ctl Win Alt 無変換 | Spc L1 L2 */
-                                    &kp LCTRL  &kp LGUI   &kp LALT   &kp INT_MUHENKAN  &kp SPACE   &mo 1      &mo 2
+    /* 左1段  Esc Q W E | R T      */  &kp ESC    &kp Q      &kp W      &kp E             &kp R       &kp T
+    /* 左2段  Tab A S D | F G      */  &kp TAB    &kp A      &kp S      &kp D             &kp F       &kp G
+    /* 左3段  Sft Z X C | V B TO1  */  &kp LSHFT  &kp Z      &kp X      &kp C             &kp V       &kp B      &to 1
+    /* 左4段  Ctl -- Alt 無変換 | Spc Win L2 */
+                                       &kp LCTRL  &trans     &kp LALT   &kp INT_MUHENKAN  &kp SPACE   &kp LGUI   &mo 2
 
-    /* 右1段  外:I O P ;  内:Y U   */  &kp I      &kp O      &kp P           &kp SEMI    &kp Y      &kp U
-    /* 右2段  外:K L @ :  内:H J   */  &kp K      &kp L      &kp LBKT        &kp SQT     &kp H      &kp J
-    /* 右3段  外:, . / \  内:B N M */  &kp COMMA  &kp DOT    &kp FSLH        &kp INT_RO  &kp B      &kp N      &kp M
-    /* 右4段  外:RSft 半/全 変換 L3   内:Ent BS Del */
-                                       &kp RSHFT  &kp GRAVE  &kp INT_HENKAN  &mo 3       &kp RET    &kp BSPC   &kp DEL
+    /* 右1段  外:I O P ;  内:Y U   */  &kp I      &kp O      &kp P      &kp SEMI    &kp Y      &kp U
+    /* 右2段  外:K L @ :  内:H J   */  &kp K      &kp L      &kp LBKT   &kp SQT     &kp H      &kp J
+    /* 右3段  外:, . / \  内:B N M */  &kp COMMA  &kp DOT    &kp FSLH   &kp INT_RO  &kp B      &kp N      &kp M
+    /* 右4段  外:Caps - -- L3   内:Ent BS Del */
+                                       &kp CAPS   &kp MINUS  &trans     &mo 3       &kp RET    &kp BSPC   &kp DEL
 
     /* エンコーダー押し込み: 左=左クリック 右=右クリック */
                                        &mkp LCLK  &mkp RCLK
@@ -110,25 +116,28 @@
         };
 
         /* =================================================================
-         * レイヤー1: 数字・ファンクション (左親指 L1 を押しながら)
-         * 数字はQWERTYの数字段と同じ指の位置に置いた:
-         *   1=Q 2=W 3=E 4=R 5=T / 6=Y 7=U 8=I 9=O 0=P -=;
-         * 基本段に無いJIS記号( ^ ¥ [ ] )もここに入れてある。
+         * レイヤー1: テンキー・ファンクション (基本層の TO 1 で切り替え)
+         * 押しっぱなしではなく切り替え式なので、戻るときは同じ位置の TO 0。
+         * 左手がテンキーそのままの並び、右手がF1〜F12(下から上へ)。
+         * 右手内側の最下段はメディア操作(前の曲 / 再生停止 / 次の曲)。
          * ================================================================= */
         num_layer {
             display-name = "Num";
             bindings = <
-    /* 左1段  -- 1 2 3 | 4 5      */  &trans     &kp N1     &kp N2     &kp N3       &kp N4     &kp N5
-    /* 左2段  -- F1 F2 F3 | F4 F5 */  &trans     &kp F1     &kp F2     &kp F3       &kp F4     &kp F5
-    /* 左3段  -- F12 ^ ¥ | [ ] -- */  &trans     &kp F12    &kp EQUAL  &kp INT_YEN  &kp RBKT   &kp BSLH   &trans
-    /* 左4段  基本段のまま        */  &trans     &trans     &trans     &trans       &trans     &trans     &trans
+    /* 左1段  7 8 9 / | -- Num   */  &kp N7     &kp N8     &kp N9     &kp KP_DIVIDE    &trans     &kp KP_NUM
+    /* 左2段  4 5 6 * | -- --    */  &kp N4     &kp N5     &kp N6     &kp KP_MULTIPLY  &trans     &trans
+    /* 左3段  1 2 3 - | -- -- TO0 */  &kp N1     &kp N2     &kp N3     &kp KP_MINUS     &trans     &trans     &to 0
+    /* 左4段  0 . = + | Ent Sft BS */
+                                      &kp N0     &kp KP_DOT &kp KP_EQUAL &kp KP_PLUS    &kp RET    &kp LSHFT  &kp BSPC
 
-    /* 右1段  外:8 9 0 -      内:6 7   */  &kp N8   &kp N9   &kp N0   &kp MINUS  &kp N6   &kp N7
-    /* 右2段  外:F8 F9 F10 F11 内:F6 F7 */  &kp F8   &kp F9   &kp F10  &kp F11    &kp F6   &kp F7
-    /* 右3段  基本段のまま              */  &trans   &trans   &trans   &trans     &trans   &trans   &trans
-    /* 右4段  基本段のまま              */  &trans   &trans   &trans   &trans     &trans   &trans   &trans
+    /* 右1段  外:-- F10 F11 F12  内:-- -- */  &trans   &kp F10  &kp F11  &kp F12  &trans   &trans
+    /* 右2段  外:-- F7 F8 F9     内:-- -- */  &trans   &kp F7   &kp F8   &kp F9   &trans   &trans
+    /* 右3段  外:-- F4 F5 F6     内:-- -- -- */
+                                              &trans   &kp F4   &kp F5   &kp F6   &trans   &trans   &trans
+    /* 右4段  外:-- F1 F2 F3     内:前 再生 次 */
+                                              &trans   &kp F1   &kp F2   &kp F3   &kp C_PREV &kp C_PP &kp C_NEXT
 
-                                            &trans   &trans
+                                              &trans   &trans
             >;
         };
 
