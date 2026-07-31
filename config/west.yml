@@ -1,14 +1,54 @@
+# 【このブランチ(dya)は DYA Studio 連携版】
+# 安定版は fix-matrix-transform ブランチ / ビルド #203 に残してある。
+# 何かあったら #203 の uf2 を書き込めば戻せる。
+#
+# ZMK本体を cormoran のフォークに差し替えている。DYA Studio の拡張機能
+# (エンコーダ設定・BLE管理・スリープ設定・電池履歴)は ZMK標準には無い
+# 独自の Studio RPC を使うため、本体側の対応が必要。
+#
+# 【重要】このフォークは v0.3 ベース。開発版(main)ではない。
+# 左右のペアリングが SMP Timeout で失敗した経緯から安定版に固定したが、
+# その前提は維持される。v0.3向けの対策(ボード名 seeeduino_xiao_ble、
+# スニペット、poll-period-ms など)もそのまま有効。
+#
+# ブランチ選定: モジュールごとのREADMEは
+#   v0.3+custom-studio-protocol                 (sensor-rotate / battery-history)
+#   v0.3-branch+custom-studio-protocol+activity (settings-rpc)
+#   v0.3-branch+custom-studio-protocol+ble      (ble-management)
+# と別々のブランチを指定しているが、west.yml に zmk は1つしか書けない。
+# v0.3-branch+dya がこれらを統合したブランチ(+activity と
+# +custom-studio-protocol のマージコミットを確認済み)なのでこれを使う。
 manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
+    - name: cormoran
+      url-base: https://github.com/cormoran
   projects:
     - name: zmk
-      remote: zmkfirmware
-      # 【重要】開発版(main)から安定版に固定。
-      # mainでは左右間のペアリングが SMP Timeout で失敗し続けたため。
-      # 実績のある配布設定(LisM / moNa2 v2)がいずれも安定版を指定している。
-      revision: v0.3-branch
+      remote: cormoran
+      revision: v0.3-branch+dya
       import: app/west.yml
+
+    # エンコーダの回転設定をStudioから変更できるようにする。
+    # (標準のZMKではエンコーダはStudioの対象外)
+    - name: zmk-behavior-runtime-sensor-rotate
+      remote: cormoran
+      revision: main
+
+    # スリープ/アイドル時間をStudioから変更できるようにする。
+    - name: zmk-module-settings-rpc
+      remote: cormoran
+      revision: main
+
+    # BLEプロファイルの管理画面。
+    - name: zmk-module-ble-management
+      remote: cormoran
+      revision: main
+
+    # 電池残量の履歴。
+    - name: zmk-module-battery-history
+      remote: cormoran
+      revision: main
   self:
     path: config

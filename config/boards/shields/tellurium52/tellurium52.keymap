@@ -4,6 +4,11 @@
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/mouse.h>
 
+// 【dyaブランチのみ】エンコーダをDYA Studioから設定できるようにする。
+// cormoran/zmk-behavior-runtime-sensor-rotate が提供する。
+// 安定版ブランチに戻す時はこの行と下のビヘイビア定義を元に戻すこと。
+#include <behaviors/runtime-sensor-rotate.dtsi>
+
 /*
  * ============================ 物理配置 ============================
  * 設計図(keyboard-layout.jpg)どおり。4段構成で、内側の列は半キー分下にずれる。
@@ -59,24 +64,37 @@
 #define ENC_RIGHT MOVE_X(ENC_SCRL)
 
 / {
-    // 左エンコーダー(sensors の0番): 縦スクロール。左に回す=上 / 右に回す=下。
-    // bindings の1個目/2個目がどちらの回転方向になるかは配線(A相B相の順)で
-    // 決まるため机上では判断できない。実機で逆だったので入れ替えてある。
-    scroll_vertical: scroll_vertical {
-        compatible = "zmk,behavior-sensor-rotate";
-        #sensor-binding-cells = <0>;
-        bindings = <&msc ENC_UP>, <&msc ENC_DOWN>;
-        tap-ms = <25>;
-    };
+    behaviors {
+        /*
+         * 【dyaブランチのみ】標準の zmk,behavior-sensor-rotate ではなく
+         * zmk,behavior-runtime-sensor-rotate を使う。DYA Studio から
+         * 回転の割り当てをレイヤーごとに書き換えられるようになる。
+         *
+         * ここに書く cw-binding / ccw-binding は「既定値」であって、
+         * Studio で設定するとそちらが優先される。つまり今のマウススクロール
+         * の動作はそのまま維持され、気に入らなければ画面で変えられる。
+         *
+         * cw = 標準版の bindings の1個目、ccw = 2個目に相当。
+         * 実機で方向が逆だったため入れ替えた結果をそのまま引き継いでいる。
+         */
 
-    // 右エンコーダー(sensors の1番): 横スクロール。左に回す=左 / 右に回す=右。
-    // 左右で回転の向きは揃っている(症状報告時、両方が同じ向きに動いていた)
-    // ので、左と同じ並び順にしてある。
-    scroll_horizontal: scroll_horizontal {
-        compatible = "zmk,behavior-sensor-rotate";
-        #sensor-binding-cells = <0>;
-        bindings = <&msc ENC_LEFT>, <&msc ENC_RIGHT>;
-        tap-ms = <25>;
+        // 左エンコーダー(sensors の0番): 縦スクロール。左回し=上 / 右回し=下。
+        scroll_vertical: scroll_vertical {
+            compatible = "zmk,behavior-runtime-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            tap-ms = <25>;
+            cw-binding = <&msc ENC_UP>;
+            ccw-binding = <&msc ENC_DOWN>;
+        };
+
+        // 右エンコーダー(sensors の1番): 横スクロール。左回し=左 / 右回し=右。
+        scroll_horizontal: scroll_horizontal {
+            compatible = "zmk,behavior-runtime-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            tap-ms = <25>;
+            cw-binding = <&msc ENC_LEFT>;
+            ccw-binding = <&msc ENC_RIGHT>;
+        };
     };
 
     keymap {
