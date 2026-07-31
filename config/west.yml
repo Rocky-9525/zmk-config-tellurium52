@@ -41,10 +41,15 @@ manifest:
       remote: cormoran
       revision: main
 
-    # BLEプロファイルの管理画面。
-    - name: zmk-module-ble-management
-      remote: cormoran
-      revision: main
+    # 【除外】zmk-module-ble-management
+    # v0.3-branch+dya には zmk_endpoint_{get,set}_preferred_transport が
+    # 入っておらず、リンク時に undefined reference で落ちる。
+    #   ble_management_handler.c:543: undefined reference to
+    #     `zmk_endpoint_set_preferred_transport'
+    # この関数は v0.3-branch+custom-studio-protocol+ble にしか無いが、
+    # そちらへ乗り換えると dya にしか無い18コミット(スリープ設定の統合や
+    # マウスキーマップ対応など)を失うため、このモジュールを諦める。
+    # BLEプロファイルの切り替えは Sysレイヤーの BT_SEL キーで代用できる。
 
     # 電池残量の履歴。
     - name: zmk-module-battery-history
